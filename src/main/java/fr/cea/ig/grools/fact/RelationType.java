@@ -34,37 +34,25 @@
  *
  */
 
-package fr.cea.ig.grools.relevant.terms;
+package fr.cea.ig.grools.fact;
 
-import fr.cea.ig.grools.model.Term;
 import lombok.Getter;
+import lombok.NonNull;
+
 
 /**
- * ConclusionTerms
+ * RelationType
  */
-public enum ConclusionTerms implements Term {
-
-    CONFIRMED_PRESENCE          ( "CONFIRMED_PRESENCE"          ),
-    CONFIRMED_ABSENCE           ( "CONFIRMED_ABSENCE"           ),
-    UNEXPECTED_PRESENCE         ( "UNEXPECTED_PRESENCE"         ),
-    UNEXPECTED_ABSENCE          ( "UNEXPECTED_ABSENCE"          ),
-    CONTRADICTORY_PRESENCE      ( "CONTRADICTORY_PRESENCE"      ),
-    CONTRADICTORY_ABSENCE       ( "CONTRADICTORY_ABSENCE"       ),
-    AMBIGUOUS_PRESENCE          ( "AMBIGUOUS_PRESENCE"          ),
-    AMBIGUOUS_ABSENCE           ( "AMBIGUOUS_ABSENCE"           ),
-    AMBIGUOUS_CONTRADICTORY     ( "AMBIGUOUS_CONTRADICTORY"     ),
-    UNCONFIRMED_PRESENCE        ( "UNCONFIRMED_PRESENCE"        ),
-    UNCONFIRMED_ABSENCE         ( "UNCONFIRMED_ABSENCE"         ),
-    UNCONFIRMED_CONTRADICTORY   ( "UNCONFIRMED_CONTRADICTORY"   ),
-    MISSING                     ( "MISSING"                     ),
-    ABSENT                      ( "ABSENT"                      ),
-    AMBIGUOUS                   ( "AMBIGUOUS"                   ),
-    UNEXPLAINED                 ( "UNEXPLAINED"                 );
+public enum RelationType {
+    PREDICTION("PREDICTION"),
+    EXPECTATION("EXPECTATION"),
+    PART( "PART"),
+    SUBTYPE("SUBTYPE");
 
     @Getter
-    private final String term;
+    private final String name;
 
-    ConclusionTerms( final String term ) {
-        this.term = term;
+    RelationType( @NonNull final String name ){
+        this.name = name;
     }
 }

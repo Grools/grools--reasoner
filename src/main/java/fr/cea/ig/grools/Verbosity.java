@@ -34,13 +34,25 @@
  *
  */
 
-package fr.cea.ig.grools.model;
-
-import java.io.Serializable;
+package fr.cea.ig.grools;
 
 /**
- * Term
+ * Verbosity
  */
-public interface Term extends Serializable {
-    String getTerm();
+public enum Verbosity {
+    LOW(0),
+    MEDIUM(1),
+    HIGHT(2),
+    QUIET(3);
+
+    private final int level;
+
+    Verbosity( int level ){
+        this.level = level;
+    }
+
+    public int compare( Verbosity v2 ){
+        return Integer.compare( level, v2.level);
+    }
+
 }

@@ -34,26 +34,38 @@
  *
  */
 
-package fr.cea.ig.grools.relevant.table;
+package fr.cea.ig.grools.logic;
 
-import fr.cea.ig.grools.model.Category;
-import fr.cea.ig.grools.model.EvaluationCell;
-import fr.cea.ig.grools.model.OperatorLogic;
-import fr.cea.ig.grools.relevant.terms.ConclusionTerms;
-import fr.cea.ig.grools.relevant.terms.ObservationTerms;
-import lombok.NonNull;
+import lombok.Getter;
 
 /**
- * ConclusionEvaluationCell
+ * Conclusion
  */
-public final class ConclusionEvaluationCell extends EvaluationCell<ObservationTerms, ConclusionTerms>  {
+public enum Conclusion {
 
-    public ConclusionEvaluationCell(
-                                           @NonNull final Category          category,
-                                           @NonNull final OperatorLogic     operator,
-                                           @NonNull final ObservationTerms  rowEntry,
-                                           @NonNull final ObservationTerms  columnEntry,
-                                           @NonNull final ConclusionTerms   value){
-        super( category, operator, rowEntry, columnEntry, value );
+    CONFIRMED_PRESENCE          ( "CONFIRMED_PRESENCE"          ),
+    CONFIRMED_ABSENCE           ( "CONFIRMED_ABSENCE"           ),
+    UNEXPECTED_PRESENCE         ( "UNEXPECTED_PRESENCE"         ),
+    UNEXPECTED_ABSENCE          ( "UNEXPECTED_ABSENCE"          ),
+    CONTRADICTORY_PRESENCE      ( "CONTRADICTORY_PRESENCE"      ),
+    CONTRADICTORY_ABSENCE       ( "CONTRADICTORY_ABSENCE"       ),
+    AMBIGUOUS_PRESENCE          ( "AMBIGUOUS_PRESENCE"          ),
+    AMBIGUOUS_ABSENCE           ( "AMBIGUOUS_ABSENCE"           ),
+    AMBIGUOUS_CONTRADICTORY     ( "AMBIGUOUS_CONTRADICTORY"     ),
+    UNCONFIRMED_PRESENCE        ( "UNCONFIRMED_PRESENCE"        ),
+    UNCONFIRMED_ABSENCE         ( "UNCONFIRMED_ABSENCE"         ),
+    UNCONFIRMED_CONTRADICTORY   ( "UNCONFIRMED_CONTRADICTORY"   ),
+    MISSING                     ( "MISSING"                     ),
+    ABSENT                      ( "ABSENT"                      ),
+    AMBIGUOUS                   ( "AMBIGUOUS"                   ),
+    UNEXPLAINED                 ( "UNEXPLAINED"                 );
+
+
+
+    @Getter
+    private final String name;
+
+    Conclusion( final String name ) {
+        this.name = name;
     }
 }

@@ -34,36 +34,53 @@
  *
  */
 
-package fr.cea.ig.grools;
+package fr.cea.ig.grools.fact;
 
-import org.kie.api.KieBase;
-import org.kie.api.KieBaseConfiguration;
-import org.kie.api.KieServices;
-import org.kie.api.conf.MBeansOption;
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
+import fr.cea.ig.grools.logic.TruthValue;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
 
 /**
- * DroolsBuilder
+ * ObservationImpl
  */
-public final class DroolsBuilder {
+public final class ObservationImpl implements Observation {
+    @Getter
+    private final String name;
+    @Getter
+    private final String source;
+    @Getter
+    private final ObservationType type;
+    @Getter
+    private final TruthValue truthValue;
 
-    public static KieSession useKieSession( final String name ) {
-        final KieServices   ks          = KieServices.Factory.get();
-        final KieContainer  kContainer  = ks.getKieClasspathContainer();
-        final KieSession    kSession    = kContainer.newKieSession( name );
-        kSession.addEventListener( new DebugDRL() );
-        return kSession;
+    @Builder
+    @java.beans.ConstructorProperties({"name", "source", "types", "truthValue"})
+    public ObservationImpl( @NonNull final String name, final String source,
+                            @NonNull final ObservationType type, final TruthValue truthValue ) {
+        this.name       = name;
+        this.source     = (source == null) ? "unknown" : source;
+        this.type       = type;
+        this.truthValue = (truthValue == null)? TruthValue.t : truthValue;
     }
 
-    public static KieSession useKieBase( final String name ) {
-        final KieServices           ks          = KieServices.Factory.get();
-        final KieContainer          kContainer  = ks.getKieClasspathContainer();
-        final KieBaseConfiguration  kbaseConf   = ks.newKieBaseConfiguration();
-        kbaseConf.setOption( MBeansOption.ENABLED );
-        final KieBase               kbase       = kContainer.newKieBase( name, kbaseConf );
-        final KieSession            kSession    = kbase.newKieSession();
-        kSession.addEventListener( new DebugDRL() );
-        return kSession;
+    @Override
+    public String toString(){
+        return "Observation(" + '\n' +
+                       "    name        = " + name         + '\n' +
+                       "    source      = " + source       + '\n' +
+                       "    type        = " + type         + '\n' +
+                       "    value       = " + truthValue   + '\n' +
+                       ")";
     }
+
+    @Override
+    public Object clone(){
+        return builder().name( name )
+                        .source( source )
+                        .type( type )
+                        .truthValue( truthValue )
+                        .build();
+    }
+
 }

@@ -34,25 +34,21 @@
  *
  */
 
-package fr.cea.ig.grools.relevant.terms;
-
-import fr.cea.ig.grools.model.Term;
-import lombok.Getter;
-
+package fr.cea.ig.grools.fact;
+import java.io.Serializable;
 /**
- * ObservationTerms
+ * Concept
  */
-public enum ObservationTerms implements Term {
-    TRUE    ( "TRUE"    ),
-    FALSE   ( "FALSE"   ),
-    BOTH    ( "BOTH"    ),
-    UNKNOWN ( "UNKNOWN" );
-
-    @Getter
-    private final String term;
-
-    ObservationTerms( final String term ) {
-        this.term = term;
-    }
-
+/*
+ * @startuml
+ * skinparam defaultFontName  Monospaced
+ * interface Concept{
+ *  + getName()     : String
+ *  + getSource()   : String
+ * }
+ * @enduml
+ */
+public interface Concept extends Serializable, Cloneable {
+    String getName();
+    String getSource();
 }

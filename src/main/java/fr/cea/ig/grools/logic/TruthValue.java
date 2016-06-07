@@ -34,26 +34,40 @@
  *
  */
 
-package fr.cea.ig.grools.relevant.table;
+package fr.cea.ig.grools.logic;
 
-import fr.cea.ig.grools.model.Category;
-import fr.cea.ig.grools.model.EvaluationCell;
-import fr.cea.ig.grools.model.OperatorLogic;
-import fr.cea.ig.grools.relevant.terms.ConclusionTerms;
-import fr.cea.ig.grools.relevant.terms.ObservationTerms;
 import lombok.NonNull;
 
 /**
- * ConclusionEvaluationCell
+ * TruthValue
  */
-public final class ObservationEvaluationCell extends EvaluationCell<ObservationTerms, ObservationTerms>  {
 
-    public ObservationEvaluationCell(
-                                            @NonNull final Category             category,
-                                            @NonNull final OperatorLogic        operator,
-                                            @NonNull final ObservationTerms     rowEntry,
-                                            @NonNull final ObservationTerms     columnEntry,
-                                            @NonNull final ObservationTerms     value ){
-        super( category, operator, rowEntry, columnEntry, value );
+public enum TruthValue{
+    n( "∅", 0, 0),
+    t( "t", true, 1, 0 ),
+    f( "f", false, 0, 1 );
+
+    @NonNull
+    private final String name;
+    private final Boolean value;
+    private final float truth;
+    private final float falsehood;
+
+    TruthValue(@NonNull final String name, final Boolean value, float truth, float falsehood){
+        this.name       = name;
+        this.value      = value;
+        this.truth      = truth;
+        this.falsehood  = falsehood;
+    }
+    TruthValue( @NonNull final String name, float truth, float falsehood){
+        this.name       = name;
+        this.value      = null;
+        this.truth      = truth;
+        this.falsehood  = falsehood;
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 }

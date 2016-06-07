@@ -34,24 +34,54 @@
  *
  */
 
-package fr.cea.ig.grools.model;
+package fr.cea.ig.grools.fact;
+import lombok.Getter;
+import lombok.NonNull;
 
 /**
- * ObservationType
+ * RelationImpl
  */
-/*
- * @startuml
- * skinparam shadowing false
- * skinparam defaultFontName courier
- * enum ObservationType {
- *  ANNOTATION
- *  COMPUTATIONAL_ANALYSIS
- *  EXPERIMENTATION
- * }
- * @enduml
- */
-public enum ObservationType {
-    ANNOTATION,
-    COMPUTATIONAL_ANALYSIS,
-    EXPERIMENTATION,
+public final class RelationImpl implements Relation {
+
+    private static final long serialVersionUID = 857073565638296917L;
+
+    @Getter
+    private final Concept source;
+
+    @Getter
+    private final Concept target;
+
+    @Getter
+    private final Enum<?> type;
+
+    @java.beans.ConstructorProperties( {"source", "target", "type"} )
+    public RelationImpl( @NonNull final Concept source, @NonNull final Concept target, @NonNull final Enum<?> type){
+        this.source = source;
+        this.target = target;
+        this.type   = type;
+    }
+
+    @java.beans.ConstructorProperties( {"source", "target"} )
+    public RelationImpl( @NonNull final Observation source, @NonNull final PriorKnowledge target){
+        this.source = source;
+        this.target = target;
+        this.type   = source.getType();
+    }
+
+
+    @Override
+    public String toString(){
+        final String s1 = (source != null )? source.getName() : "∅";
+        final String s2 = (target != null )? target.getName() : "∅";
+        return "Relation(\n" +
+                       "    source   = " + s1      + '\n' +
+                       "    target   = " + s2      + '\n' +
+                       "    type     = " + type    + '\n' +
+                       ")";
+    }
+
+    @Override
+    public Object clone(){
+        return new RelationImpl( source, target, type);
+    }
 }

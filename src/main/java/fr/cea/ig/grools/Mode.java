@@ -37,52 +37,62 @@
 package fr.cea.ig.grools;
 
 
-import sun.security.pkcs11.P11Util;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.EnumSet;
 
 /**
- * Mode
+ *
  */
-public final class Mode implements Serializable{
+/*
+ * @startuml
+ * class Mode{
+ *  -mode : String
+ *  +Mode( final String mode )
+ *  +toString() : String
+ *  + getMode() : String
+ * }
+ * hide  Mode methods
+ * @enduml
+ */
+public final class Mode implements Serializable {
 
-    private static final long serialVersionUID = -7818231145374064810L;
-    private boolean isSpecificRuleEnabled;
-    private boolean isMandatoryRuleEnabled;
+    private static final long serialVersionUID = 3631557000997944353L;
 
-    private Mode(){
-        isSpecificRuleEnabled = false;
-        isMandatoryRuleEnabled= false;
+    @NonNull
+    @Getter
+    private final String mode;
+
+    @Getter @Setter
+    private EnumSet<VariantMode> variants;
+
+    public Mode(@NonNull final String mode) {
+        this.mode = mode;
+        this.variants = EnumSet.of(VariantMode.NORMAL);
     }
 
-
-    public static final Mode MODE = new Mode();
-
-
-    public void setIsSpecificRuleEnabled( boolean value ){
-        isSpecificRuleEnabled = value;
+    public Mode(@NonNull final String mode, @NonNull final EnumSet<VariantMode> variants) {
+        this.mode       = mode;
+        this.variants   = variants;
     }
 
-
-    public void setIsMandatoryRuleEnabled( boolean value ){
-        isMandatoryRuleEnabled = value;
+    public void addVariants(@NonNull final VariantMode... vs){
+        final EnumSet<VariantMode> vm = EnumSet.copyOf(this.variants);
+        Arrays.stream(vs).forEach(variants::add);
     }
 
-
-    public boolean getIsSpecificRuleEnabled(){
-        return isSpecificRuleEnabled;
+    public void removeVariants(@NonNull final VariantMode... vs){
+        Arrays.stream(vs).forEach(variants::remove);
     }
 
+    @NonNull @Override
+    public String toString() { return mode; }
 
-    public boolean getIsMandatoryRuleEnabled(){
-        return isMandatoryRuleEnabled;
-    }
-
-    @Override
-    public String toString() {
-        return "Mode(" +
-                       "isSpecificRuleEnabled=" + isSpecificRuleEnabled +
-                       ", isMandatoryRuleEnabled=" + isMandatoryRuleEnabled +
-                       ')';
-    }
+    public static final Mode NORMAL = new Mode( "normal" );
+    public static final Mode SPECIFIC   = new Mode( "specific" );
+    public static final Mode DISPENSABLE   = new Mode( "dispensable" );
 }

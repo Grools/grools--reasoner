@@ -34,36 +34,40 @@
  *
  */
 
-package fr.cea.ig.grools.model;
-
-import lombok.Getter;
+package fr.cea.ig.grools.fact;
+import fr.cea.ig.grools.logic.Conclusion;
+import fr.cea.ig.grools.logic.TruthValuePowerSet;
 
 /**
- * OperatorLogic
+ * PriorKnowledge
  */
 /*
  * @startuml
- * skinparam shadowing false
- * skinparam defaultFontName courier
- * enum OperatorLogic {
- * + AND
- * + OR
- * + NOR
- * + getNumber()    : int
- * - number         : int
+ * skinparam defaultFontName  Monospaced
+ * interface PriorKnowledge extends Concept{
+ *  + getLabel()        : Label
+ *  + getPrediction()   : TruthValuePowerSet
+ *  + getExpectation()  : TruthValuePowerSet
+ *  + getConclusion()   : Conclusion
+ *  + getIsDispensable()  : boolean
+ *  + getIsSpecific()   : boolean
+ *  + setPrediction( TruthValuePowerSet values )
+ *  + setExpectation( TruthValuePowerSet values )
+ *  + setConclusion( Conclusion conclusion )
+ *  + setIsDispensable( boolean value )
+ *  + setIsSpecific( boolean value )
  * }
  * @enduml
  */
-public enum OperatorLogic {
-    AND(0),
-    OR(1),
-    NOT(2);
-
-    @Getter
-    private final int number;
-
-    OperatorLogic(int number){
-        this.number = number;
-    }
-
+public interface PriorKnowledge extends Concept {
+    TruthValuePowerSet              getPrediction( );
+    void                            setPrediction( TruthValuePowerSet values );
+    TruthValuePowerSet              getExpectation( );
+    void                            setExpectation( TruthValuePowerSet values );
+    Conclusion                      getConclusion();
+    void                            setConclusion( Conclusion conclusion );
+    boolean                         getIsDispensable();
+    void                            setIsDispensable( boolean value );
+    boolean                         getIsSpecific();
+    void                            setIsSpecific( boolean value );
 }

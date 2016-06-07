@@ -34,24 +34,26 @@
  *
  */
 
-package fr.cea.ig.grools.relevant.table;
+package fr.cea.ig.grools.fact;
 
-import fr.cea.ig.grools.model.Category;
-import fr.cea.ig.grools.model.OperatorLogic;
-import fr.cea.ig.grools.relevant.terms.ObservationTerms;
-import lombok.NonNull;
+import java.io.Serializable;
 
 /**
- * ConclusionEvaluationCell
+ * Relation
  */
-public class RelevantTheoryEvaluationCell extends fr.cea.ig.grools.model.EvaluationCell<ObservationTerms,ObservationTerms> {
+/*
+ * @startuml
+ * skinparam defaultFontName  Monospaced
+ * interface Relation extends Serializable {
+ *  + getSource()   : Concept
+ *  + getTarget()   : Concept
+ * }
+ * @enduml
+ */
+public interface Relation extends Serializable, Cloneable {
+    Concept getSource();
 
-    public RelevantTheoryEvaluationCell(
-                                               @NonNull final Category          category    ,
-                                               @NonNull final OperatorLogic     operator    ,
-                                               @NonNull final ObservationTerms  rowEntry    ,
-                                               @NonNull final ObservationTerms  columnEntry ,
-                                               @NonNull final ObservationTerms  value ){
-        super( category, operator, rowEntry, columnEntry, value );
-    }
+    Concept getTarget();
+
+    Enum<?> getType();
 }

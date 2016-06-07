@@ -43,9 +43,10 @@ buildscript {
     }
     dependencies {
         classpath 'be.jlr-home.gradle:plantumlPlugin:0.1.+'
-        classpath 'com.bmuschko:gradle-nexus-plugin:2.+'
     }
 }
+plugins { id "me.champeau.gradle.jmh" version "0.3.0" }
+plugins { id "com.bmuschko.nexus"     version "2.3.1" }
 
 apply plugin: 'java'
 apply plugin: 'plantuml'
@@ -54,12 +55,12 @@ apply plugin: 'maven'
 apply plugin: 'findbugs'
 apply plugin: 'com.bmuschko.nexus'
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = theCompatibility
+targetCompatibility = theCompatibility 
 
-version     = '2.0'
-group       = 'fr.cea.ig'
-description = projectDescription
+group               = theGroup
+version             = theVersion
+description         = theDescription
 
 repositories {
     mavenLocal()
@@ -69,45 +70,48 @@ repositories {
 }
 
 dependencies {
-    testCompile group: 'junit',             name: 'junit',              version: '4.11'
-    compile     group: 'org.projectlombok', name: 'lombok',             version: '1.16.6'
-    compile     group: 'javax.validation',  name: 'validation-api',     version: '1.1.0.Final'
-    compile     group: 'ch.qos.logback',    name: 'logback-classic',    version: '1.1.2'
-    compile     group: 'org.drools',        name: 'drools-compiler',    version: droolsVersion
-    compile     group: 'org.drools',        name: 'knowledge-api',      version: droolsVersion
-//    compile     group: 'org.drools',        name: 'drools-reteoo',      version: droolsVersion
+    compile     group: 'org.projectlombok'  , name: 'lombok'                , version: lombokVersion
+    compile     group: 'ch.qos.logback'     , name: 'logback-classic'       , version: logbackVersion
+    testCompile group: 'junit'              , name: 'junit'                 , version: junitVersion
+
 }
 
 jar {
     manifest {
-        attributes( "Implementation-Title":         projectName,
-                    "Implementation-Version":       version,
+        attributes( "Implementation-Title":         theName,
+                    "Implementation-Version":       theVersion,
                     "Implementation-Vendor":        "Genoscope, LABGeM",
-                    "Product-Name":                 projectName,
+                    "Product-Name":                 theName,
                     "provider":                     "Genoscope",
                     "Created-By":                   "LABGeM",
-                    "relevant":                  "GROOLS Application.",
+                    "relevant":                     "GROOLS Application.",
                     "Build-Date":                   new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
                     "Build-JDK":                    System.getProperty("java.version"),
                     "Build-Gradle":                 project.gradle.gradleVersion
                    )
     }
-    baseName = projectName
+    baseName = theName
 }
 
-tasks.withType(Test) {
-    testLogging {
-        events 'started','passed'
-    }
-    jvmArgs  "-Dcom.sun.management.jmxremote.port=19988", "-Dcom.sun.management.jmxremote.ssl=false", "-Dcom.sun.management.jmxremote.authenticate=false", "-Ddrools.mbeans=enabled"
-}
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+jmh {
+    jmhVersion      = jmhVersion
+    fork            = 4
+    iterations      = 30
+    benchmarkMode   = 'thrpt'
+    humanOutputFile = project.file("${project.buildDir}/reports/jmh/human.txt")
+    resultsFile     = project.file("${project.buildDir}/reports/jmh/results.csv")
+    warmup          = '1s'
+    resultFormat    = 'CSV'
 }
 
 plantuml{
     fileFormat = 'SVG'
 }
+
 findbugs {
     effort = "max"
     ignoreFailures = true
@@ -115,14 +119,14 @@ findbugs {
 
 modifyPom {
     project {
-        name          projectName
-        description   projectDescription
-        url           projectUrlBase+projectUrlCore
+        name          theName
+        description   theDescription
+        url           urlBase+urlCore
         inceptionYear '2014'
         scm {
-            url                   projectUrlBase+projectUrlCore
-            connection            projectUrlBase+projectUrlCore+'.git'
-            developerConnection   projectGitBase+projectUrlCore+'.git'
+            url                   urlBase+urlCore
+            connection            urlBase+urlCore+'.git'
+            developerConnection   gitBase+urlCore+'.git'
         }
         licenses {
             license {
@@ -146,6 +150,7 @@ extraArchive {
     tests    = true
     javadoc  = true
 }
+
 nexus {
     sign                  = false
     repositoryUrl         = 'https://gsphere.genoscope.cns.fr/nexus/content/repositories/releases/'

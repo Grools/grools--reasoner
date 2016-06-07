@@ -36,25 +36,31 @@
 
 package fr.cea.ig.grools;
 
-import fr.cea.ig.grools.relevant.table.ConclusionEvaluationCell;
-import fr.cea.ig.grools.relevant.table.ConclusionEvaluationTable;
+import fr.cea.ig.grools.logic.TruthValue;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
-
 /**
- * TableTest
+ * TruthValueTest
  */
-public class TableTest {
+public class TruthValueTest {
 
     @Test
-    public void conclusionCellsTest() {
-        ConclusionEvaluationTable   table = ConclusionEvaluationTable.EVALUATION_TABLE;
-        ConclusionEvaluationCell[]  cells = table.toCells( ConclusionEvaluationCell.class );
-        assertNotNull( cells );
-        assertEquals( cells.length, 16 );
-        for(final ConclusionEvaluationCell cell: cells)
-            assertNotNull( cell );
+    public void valueOfNone(){
+        TruthValue value = TruthValue.valueOf( "n" );
+        assertEquals(  TruthValue.n, value );
     }
+
+    @Test
+    public void valueOfTrue(){
+        TruthValue value = TruthValue.valueOf( "t" );
+        assertEquals(  TruthValue.t, value );
+    }
+
+    @Test
+    public void valueOfFalse(){
+        TruthValue value = TruthValue.valueOf( "f" );
+        assertEquals(  TruthValue.f, value );
+    }
+
 }

@@ -34,28 +34,34 @@
  *
  */
 
-package fr.cea.ig.grools;
+package fr.cea.ig.grools.fact;
 
-import lombok.Data;
-import lombok.NonNull;
+import lombok.Getter;
 
-import java.io.Serializable;
+import java.util.Collections;
+import java.util.EnumSet;
 
 /**
- * Message
+ * ObservationType
  */
-@Data
-public final class Message implements Serializable{
-    private static final long serialVersionUID = 3059752850601063478L;
+public enum ObservationType {
 
-    public static Message ENABLE_SPECIFIC   = new Message("enable specific reasoning");
-    public static Message DISABLE_SPECIFIC  = new Message("disable specific reasoning");
-    public static Message ENABLE_MANDATORY  = new Message("enable mandatory reasoning");
-    public static Message DISABLE_MANDATORY = new Message("disable mandatory reasoning");
+    COMPUTATION     ( "COMPUTATION"     , RelationType.PREDICTION  ),
+    ANNOTATION      ( "ANNOTATION"      , RelationType.PREDICTION, RelationType.EXPECTATION  ),
+    EXPERIMENTATION ( "EXPERIMENTATION" , RelationType.EXPECTATION );
 
-    private String message;
+    @Getter
+    private final EnumSet<RelationType> types;
+    private final String                name;
 
-    private Message( @NonNull final String text ){
-        this.message = text;
+    ObservationType(final String name, final RelationType... names ){
+        this.name = name;
+        this.types = EnumSet.noneOf( RelationType.class );
+        Collections.addAll( types, names );
+    }
+
+    @Override
+    public String toString(){
+        return name;
     }
 }

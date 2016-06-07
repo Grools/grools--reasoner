@@ -34,27 +34,35 @@
  *
  */
 
-package fr.cea.ig.grools.util;
+package fr.cea.ig.grools;
 
-import java.util.AbstractMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentMap;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import lombok.NonNull;
 
 /**
- * Map
+ * VariantMode
  */
-public class MapUtil {
-    public static <K, V> Map.Entry<K, V> entry(K key, V value) {
-        return new AbstractMap.SimpleEntry<>(key, value);
+public enum VariantMode {
+
+    DISPENSABLE ( "dispensable" ),
+    SPECIFIC    ( "specific" ),
+    NORMAL      ( "normal" );
+
+    private String modeVariant;
+
+
+    VariantMode(@NonNull final String modeVariant) {
+        this.modeVariant = modeVariant;
     }
 
-    public static <K, U> Collector<Map.Entry<K, U>, ?, Map<K, U>> entriesToMap() {
-        return Collectors.toMap((e) -> e.getKey(), (e) -> e.getValue());
+    @NonNull @Override
+    public String toString() { return modeVariant; }
+
+    @NonNull
+    public String getModeVariant(){
+        return modeVariant;
     }
 
-    public static <K, U> Collector<Map.Entry<K, U>, ?, ConcurrentMap<K, U>> entriesToConcurrentMap() {
-        return Collectors.toConcurrentMap((e) -> e.getKey(), (e) -> e.getValue());
+    public void setModeVariant( @NonNull final String modeVariant ){
+        this.modeVariant = modeVariant;
     }
 }
