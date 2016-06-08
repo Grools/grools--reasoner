@@ -37,6 +37,7 @@
 package fr.cea.ig.grools.fact;
 import fr.cea.ig.grools.logic.Conclusion;
 import fr.cea.ig.grools.logic.TruthValuePowerSet;
+import org.kie.api.definition.type.PropertyReactive;
 
 /**
  * PriorKnowledge
@@ -59,6 +60,7 @@ import fr.cea.ig.grools.logic.TruthValuePowerSet;
  * }
  * @enduml
  */
+@PropertyReactive
 public interface PriorKnowledge extends Concept {
     TruthValuePowerSet              getPrediction( );
     void                            setPrediction( TruthValuePowerSet values );

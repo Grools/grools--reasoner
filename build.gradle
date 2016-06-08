@@ -71,6 +71,7 @@ repositories {
 
 dependencies {
     compile     group: 'org.projectlombok'  , name: 'lombok'                , version: lombokVersion
+    compile     group: 'org.drools'         , name: 'knowledge-api'         , version: droolsVersion // temporary needed until Always property works
     compile     group: 'ch.qos.logback'     , name: 'logback-classic'       , version: logbackVersion
     testCompile group: 'junit'              , name: 'junit'                 , version: junitVersion
 

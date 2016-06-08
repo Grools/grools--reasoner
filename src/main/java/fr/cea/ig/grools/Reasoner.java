@@ -4,9 +4,11 @@ import fr.cea.ig.grools.fact.Concept;
 import fr.cea.ig.grools.fact.Observation;
 import fr.cea.ig.grools.fact.PriorKnowledge;
 import fr.cea.ig.grools.fact.Relation;
+import fr.cea.ig.grools.fact.RelationType;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Reasoner
@@ -21,10 +23,10 @@ import java.util.List;
  *  + copy()                                                                : Reasoner
  *  + getMode()                                                             : Mode
  *  + find(  final String name )                                      : Fact
- *  + getConcepts()                                                         : List<Concept>
- *  + getRelations()                                                        : List<Relation>
- *  + getObservations()                                                     : List<Observation>
- *  + getObservationsUsingConceptRelation( final String conceptId)  : List<Observation>
+ *  + getConcepts()                                                         : Set<Concept>
+ *  + getRelations()                                                        : Set<Relation>
+ *  + getObservations()                                                     : Set<Observation>
+ *  + getObservationsUsingConceptRelation( final String conceptId)  : Set<Observation>
  *  + getObservation( final String name)                              : Observation
  *  + reasoning()                                                           : void
  * }
@@ -37,27 +39,35 @@ public interface Reasoner extends Serializable, AutoCloseable {
 
     void                insert( final Object... data);
 
+    void                insert( final Collection<?> data);
+
     void                delete( final Object... data);
+
+    void                delete( final Collection<?> data);
 
     Reasoner            copy();
 
     Mode                getMode();
 
-    List<Concept>       getConcepts();
+    Set<Concept>        getConcepts();
 
     Concept             getConcept( final String name );
 
     PriorKnowledge      getPriorKnowledge( final String name );
 
-    List<Relation>      getRelations();
+    Set<PriorKnowledge> getPriorKnowledges();
 
-    Relation            getRelation( final Concept source, final Concept target );
+    Set<Relation>       getRelations();
 
-    List<Observation>   getObservations();
+    Set<Relation>       getRelations( final Concept source, final Concept target );
 
-    List<Observation>   getObservationsUsingConceptRelation( final String conceptId);
+    Relation            getRelation( final Concept source, final Concept target, final RelationType type );
+
+    Set<Observation>    getObservations();
+
+    Set<Observation>    getObservationsUsingConceptRelation( final String conceptId);
 
     Observation         getObservation( final String name);
 
-    void reasoning();
+    void               reasoning();
 }
