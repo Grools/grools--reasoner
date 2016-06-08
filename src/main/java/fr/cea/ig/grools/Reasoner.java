@@ -61,6 +61,10 @@ public interface Reasoner extends Serializable, AutoCloseable {
 
     Set<Relation>       getRelations( final Concept source, final Concept target );
 
+    Set<Relation>       getRelationsWithSource( Concept source );
+
+    Set<Relation>       getRelationsWithTarget( Concept target );
+
     Relation            getRelation( final Concept source, final Concept target, final RelationType type );
 
     Set<Observation>    getObservations();
