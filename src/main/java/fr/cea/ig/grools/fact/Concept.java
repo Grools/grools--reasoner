@@ -51,4 +51,6 @@ import java.io.Serializable;
 public interface Concept extends Serializable, Cloneable {
     String getName();
     String getSource();
+    String getLabel();
+    String getDescription();
 }

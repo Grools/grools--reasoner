@@ -50,16 +50,23 @@ public final class ObservationImpl implements Observation {
     @Getter
     private final String source;
     @Getter
+    private final String label;
+    @Getter
+    private final String description;
+    @Getter
     private final ObservationType type;
     @Getter
     private final TruthValue truthValue;
 
     @Builder
-    @java.beans.ConstructorProperties({"name", "source", "types", "truthValue"})
+    @java.beans.ConstructorProperties({"name", "source", "label", "description", "types", "truthValue"})
     public ObservationImpl( @NonNull final String name, final String source,
+                            final String label, final String description,
                             @NonNull final ObservationType type, final TruthValue truthValue ) {
         this.name       = name;
         this.source     = (source == null) ? "unknown" : source;
+        this.label      = (label == null) ? "" : label;
+        this.description= (description == null) ? "" : description;
         this.type       = type;
         this.truthValue = (truthValue == null)? TruthValue.t : truthValue;
     }

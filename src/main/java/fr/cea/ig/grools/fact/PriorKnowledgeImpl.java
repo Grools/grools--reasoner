@@ -38,6 +38,7 @@ package fr.cea.ig.grools.fact;
 
 import fr.cea.ig.grools.logic.Conclusion;
 import fr.cea.ig.grools.logic.TruthValuePowerSet;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -55,8 +56,15 @@ public final class PriorKnowledgeImpl implements PriorKnowledge {
     @Getter
     private final String source;
 
+    @Getter
+    private final String label;
+
+    @Getter
+    private final String description;
+
     @Getter @Setter
     private TruthValuePowerSet prediction;
+
     @Getter @Setter
     private TruthValuePowerSet expectation;
 
@@ -67,15 +75,18 @@ public final class PriorKnowledgeImpl implements PriorKnowledge {
 
     private boolean isSpecific;
 
-    @java.beans.ConstructorProperties({"name", "source", "prediction", "expectation", "conclusion", "isDispensable", "isSpecific"})
-    PriorKnowledgeImpl( @NonNull final String name, @NonNull final String source, final TruthValuePowerSet prediction, final TruthValuePowerSet expectation, final Conclusion conclusion, boolean isDispensable, boolean isSpecific) {
+    @Builder
+    @java.beans.ConstructorProperties({"name", "source", "label", "description", "prediction", "expectation", "conclusion", "isDispensable", "isSpecific"})
+    PriorKnowledgeImpl( @NonNull final String name, final String source, final String label, final String description, final TruthValuePowerSet prediction, final TruthValuePowerSet expectation, final Conclusion conclusion, final Boolean isDispensable, final Boolean isSpecific) {
         this.name           = name;
-        this.source         = source;
-        this.prediction     = prediction;
-        this.expectation    = expectation;
-        this.conclusion     = conclusion;
-        this.isDispensable  = isDispensable;
-        this.isSpecific     = isSpecific;
+        this.source         = ( source          == null ) ? "unknown"               : source;
+        this.label          = ( label           == null ) ? ""                      : label;
+        this.description    = ( description     == null ) ? ""                      : description;
+        this.prediction     = ( prediction      == null ) ? TruthValuePowerSet.n    : prediction;
+        this.expectation    = ( expectation     == null ) ? TruthValuePowerSet.n    : expectation;
+        this.conclusion     = ( conclusion      == null ) ? Conclusion.UNEXPLAINED  : conclusion;
+        this.isDispensable  = ( isDispensable   == null ) ? false                   : isDispensable;
+        this.isSpecific     = ( isSpecific      == null ) ? false                   : isSpecific;
     }
 
     @Override
@@ -121,73 +132,5 @@ public final class PriorKnowledgeImpl implements PriorKnowledge {
                         .isDispensable( isDispensable )
                         .isSpecific( isSpecific )
                         .build();
-    }
-
-    public static PriorKnowledgeImplBuilder builder() {
-        return new PriorKnowledgeImplBuilder();
-    }
-
-    public static class PriorKnowledgeImplBuilder {
-        private String              name;
-        private String              source;
-        private TruthValuePowerSet  prediction;
-        private TruthValuePowerSet  expectation;
-        private Conclusion          conclusion;
-        private boolean             isDispensable   = false;
-        private boolean             isSpecific      = false;
-
-        PriorKnowledgeImplBuilder() {
-        }
-
-        public PriorKnowledgeImplBuilder name(@NonNull final String name) {
-            this.name = name;
-            return this;
-        }
-
-        public PriorKnowledgeImplBuilder source(@NonNull final String source) {
-            this.source = source;
-            return this;
-        }
-
-        public PriorKnowledgeImplBuilder prediction(@NonNull final TruthValuePowerSet values) {
-            this.prediction = values;
-            return this;
-        }
-
-        public PriorKnowledgeImplBuilder expectation(@NonNull final TruthValuePowerSet values) {
-            this.expectation = values;
-            return this;
-        }
-
-        public PriorKnowledgeImplBuilder conclusion(@NonNull final Conclusion conclusion) {
-            this.conclusion = conclusion;
-            return this;
-        }
-
-        public PriorKnowledgeImplBuilder isDispensable(boolean isDispensable) {
-            this.isDispensable = isDispensable;
-            return this;
-        }
-
-        public PriorKnowledgeImplBuilder isSpecific(boolean isSpecific) {
-            this.isSpecific = isSpecific;
-            return this;
-        }
-
-        public PriorKnowledgeImpl build() {
-            if( source == null )
-                source = "Unknown";
-            if( prediction == null )
-                prediction = TruthValuePowerSet.n;
-            if( expectation == null )
-                expectation = TruthValuePowerSet.n;
-            if( conclusion == null )
-                conclusion = Conclusion.UNEXPLAINED;
-            return new PriorKnowledgeImpl( name, source, prediction, expectation, conclusion, isDispensable, isSpecific);
-        }
-
-        public String toString() {
-            return "PriorKnowledgeBuilder(name=" + this.name + ", source=" + this.source + ", prediction=" + this.prediction + ", expectation=" + this.expectation + ", conclusion=" + this.conclusion + ", isDispensable=" + this.isDispensable + ", isSpecific=" + this.isSpecific + ")";
-        }
     }
 }
