@@ -77,5 +77,7 @@ public interface Reasoner extends Serializable, AutoCloseable {
 
     Observation         getObservation( final String name);
 
+    Set<Relation>       getSubGraph( final Concept concept );
+
     void               reasoning();
 }
