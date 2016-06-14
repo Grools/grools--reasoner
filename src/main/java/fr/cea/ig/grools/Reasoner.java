@@ -59,6 +59,8 @@ public interface Reasoner extends Serializable, AutoCloseable {
 
     Set<PriorKnowledge> getLeavesPriorKnowledges();
 
+    Set<PriorKnowledge> getTopsPriorKnowledges();
+
     Set<Relation>       getRelations();
 
     Set<Relation>       getRelations( final Concept source, final Concept target );
