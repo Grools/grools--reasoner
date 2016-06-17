@@ -84,4 +84,25 @@ public final class RelationImpl implements Relation {
     public Object clone(){
         return new RelationImpl( source, target, type);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Relation relation = (Relation) o;
+
+        if (!source.equals(relation.getSource())) return false;
+        if (!target.equals(relation.getTarget())) return false;
+        return type.equals(relation.getType());
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = source.hashCode();
+        result = 31 * result + target.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
 }

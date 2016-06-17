@@ -37,6 +37,7 @@
 package fr.cea.ig.grools.logic;
 
 import fr.cea.ig.grools.fact.Observation;
+import fr.cea.ig.grools.fact.PriorKnowledge;
 import lombok.NonNull;
 
 import java.util.*;
@@ -203,6 +204,10 @@ public class Math {
         else // the most precise
             result = ( tvps1.size() < tvps2.size()) ? tvps1 : tvps2;
         return result;
+    }
+
+    public static TruthValuePowerSet choice(@NonNull final Set<TruthValuePowerSet> set ){
+        return set.stream().reduce( TruthValuePowerSet.F, (a,b) -> choice(a,b) );
     }
 
 }

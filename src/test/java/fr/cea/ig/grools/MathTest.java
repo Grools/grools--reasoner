@@ -36,15 +36,18 @@
 
 package fr.cea.ig.grools;
 
+import fr.cea.ig.grools.fact.Observation;
+import fr.cea.ig.grools.fact.ObservationImpl;
+import fr.cea.ig.grools.fact.ObservationType;
 import fr.cea.ig.grools.logic.Math;
 import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.logic.TruthValuePowerSet;
 import fr.cea.ig.grools.logic.TruthValueSet;
-import static org.junit.Assert.*;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * MathTest
@@ -95,6 +98,21 @@ public class MathTest {
         assertEquals( TruthValueSet.F, Math.merge(b,d) );
         assertEquals( TruthValueSet.B, Math.merge(b,e) );
 
+    }
+
+    @Test
+    public void mergeObservationWithSetOfTruthValueSet(){
+        final Observation observation = new ObservationImpl( "Exp_Test",
+                                                             "Experimentation LABGeM" ,
+                                                             "",
+                                                             "",
+                                                             ObservationType.EXPERIMENTATION,
+                                                             TruthValue.t);
+        final Set<Observation> set = new HashSet<>(  );
+        set.add( observation );
+        EnumSet<TruthValueSet> ets = EnumSet.of( TruthValueSet.n );
+        TruthValuePowerSet result = Math.merge( set, ets );
+        assertEquals( TruthValuePowerSet.T, result);
     }
 
     @Test

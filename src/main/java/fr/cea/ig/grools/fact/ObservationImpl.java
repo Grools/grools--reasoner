@@ -58,6 +58,33 @@ public final class ObservationImpl implements Observation {
     @Getter
     private final TruthValue truthValue;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Observation that = (Observation) o;
+
+        if (!name.equals(that.getName())) return false;
+        if (!source.equals(that.getSource())) return false;
+        if (!label.equals(that.getLabel())) return false;
+        if (!description.equals(that.getDescription())) return false;
+        if (type != that.getType()) return false;
+        return truthValue == that.getTruthValue();
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + source.hashCode();
+        result = 31 * result + label.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + type.hashCode();
+        result = 31 * result + truthValue.hashCode();
+        return result;
+    }
+
     @Builder
     @java.beans.ConstructorProperties({"name", "source", "label", "description", "types", "truthValue"})
     public ObservationImpl( @NonNull final String name, final String source,
