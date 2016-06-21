@@ -75,6 +75,17 @@ public final class PriorKnowledgeImpl implements PriorKnowledge {
 
     private boolean isSpecific;
 
+    private final int hash;
+
+    private static int hashCalculation( @NonNull final String name, @NonNull final String source,
+                                        @NonNull final String label, @NonNull final String description ){
+        int result = name.hashCode();
+        result = 31 * result + source.hashCode();
+        result = 31 * result + label.hashCode();
+        result = 31 * result + description.hashCode();
+        return result;
+    }
+
     @Builder
     @java.beans.ConstructorProperties({"name", "source", "label", "description", "prediction", "expectation", "conclusion", "isDispensable", "isSpecific"})
     PriorKnowledgeImpl( @NonNull final String name, final String source, final String label, final String description, final TruthValuePowerSet prediction, final TruthValuePowerSet expectation, final Conclusion conclusion, final Boolean isDispensable, final Boolean isSpecific) {
@@ -87,6 +98,7 @@ public final class PriorKnowledgeImpl implements PriorKnowledge {
         this.conclusion     = ( conclusion      == null ) ? Conclusion.UNEXPLAINED  : conclusion;
         this.isDispensable  = ( isDispensable   == null ) ? false                   : isDispensable;
         this.isSpecific     = ( isSpecific      == null ) ? false                   : isSpecific;
+        this.hash           = hashCalculation( this.name, this.source, this.label, this.description);
     }
 
     @Override
@@ -132,5 +144,29 @@ public final class PriorKnowledgeImpl implements PriorKnowledge {
                         .isDispensable( isDispensable )
                         .isSpecific( isSpecific )
                         .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || ! (o instanceof PriorKnowledge)) return false;
+
+        PriorKnowledge that = (PriorKnowledge) o;
+
+        if (isDispensable   !=      that.getIsDispensable() ) return false;
+        if (isSpecific      !=      that.getIsSpecific()    ) return false;
+        if (! name         .equals( that.getName()        ) ) return false;
+        if (! source       .equals( that.getSource()      ) ) return false;
+        if (! label        .equals( that.getLabel()       ) ) return false;
+        if (! description  .equals( that.getDescription() ) ) return false;
+        if (prediction      !=      that.getPrediction()    ) return false;
+        if (expectation     !=      that.getExpectation()   ) return false;
+        return conclusion == that.getConclusion();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 }

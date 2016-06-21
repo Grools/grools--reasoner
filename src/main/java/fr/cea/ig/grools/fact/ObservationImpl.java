@@ -58,24 +58,12 @@ public final class ObservationImpl implements Observation {
     @Getter
     private final TruthValue truthValue;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    private final int hash;
 
-        Observation that = (Observation) o;
+    private static int hashCalculation( @NonNull final String name, @NonNull final String source,
+                                        @NonNull final String label, @NonNull final String description,
+                                        @NonNull final ObservationType type, @NonNull final TruthValue truthValue){
 
-        if (!name.equals(that.getName())) return false;
-        if (!source.equals(that.getSource())) return false;
-        if (!label.equals(that.getLabel())) return false;
-        if (!description.equals(that.getDescription())) return false;
-        if (type != that.getType()) return false;
-        return truthValue == that.getTruthValue();
-
-    }
-
-    @Override
-    public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + source.hashCode();
         result = 31 * result + label.hashCode();
@@ -96,6 +84,7 @@ public final class ObservationImpl implements Observation {
         this.description= (description == null) ? "" : description;
         this.type       = type;
         this.truthValue = (truthValue == null)? TruthValue.t : truthValue;
+        this.hash       = hashCalculation( this.name, this.source, this.label, this.description, this.type, this.truthValue);
     }
 
     @Override
@@ -115,6 +104,27 @@ public final class ObservationImpl implements Observation {
                         .type( type )
                         .truthValue( truthValue )
                         .build();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Observation that = (Observation) o;
+
+        if (!name.equals(that.getName())) return false;
+        if (!source.equals(that.getSource())) return false;
+        if (!label.equals(that.getLabel())) return false;
+        if (!description.equals(that.getDescription())) return false;
+        if (type != that.getType()) return false;
+        return truthValue == that.getTruthValue();
+
+    }
+
+    @Override
+    public int hashCode() {
+        return hash;
     }
 
 }

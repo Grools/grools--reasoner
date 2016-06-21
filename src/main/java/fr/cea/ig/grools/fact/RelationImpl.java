@@ -54,18 +54,26 @@ public final class RelationImpl implements Relation {
     @Getter
     private final Enum<?> type;
 
+    private final int hash;
+
+    private static int hashCalculation( @NonNull final Concept source, @NonNull final Concept target, @NonNull final Enum<?> type){
+        int result = source.hashCode();
+        result = 31 * result + target.hashCode();
+        result = 31 * result + type.hashCode();
+        return result;
+    }
+
     @java.beans.ConstructorProperties( {"source", "target", "type"} )
     public RelationImpl( @NonNull final Concept source, @NonNull final Concept target, @NonNull final Enum<?> type){
         this.source = source;
         this.target = target;
         this.type   = type;
+        this.hash   = hashCalculation(source, target, type);
     }
 
     @java.beans.ConstructorProperties( {"source", "target"} )
     public RelationImpl( @NonNull final Observation source, @NonNull final PriorKnowledge target){
-        this.source = source;
-        this.target = target;
-        this.type   = source.getType();
+        this( source, target, source.getType() );
     }
 
 
@@ -100,9 +108,6 @@ public final class RelationImpl implements Relation {
 
     @Override
     public int hashCode() {
-        int result = source.hashCode();
-        result = 31 * result + target.hashCode();
-        result = 31 * result + type.hashCode();
-        return result;
+        return hash;
     }
 }
