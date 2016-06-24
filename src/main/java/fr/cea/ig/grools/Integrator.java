@@ -44,5 +44,5 @@ import java.util.Set;
  */
 public interface Integrator {
     void integration();
-    Set<PriorKnowledge> getPriorKnowledgeRelatedToObservationNamed(final String tigrID );
+    Set<PriorKnowledge> getPriorKnowledgeRelatedToObservationNamed( final String source, final String id );
 }
