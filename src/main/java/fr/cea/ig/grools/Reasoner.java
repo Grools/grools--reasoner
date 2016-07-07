@@ -7,6 +7,7 @@ import fr.cea.ig.grools.fact.Relation;
 import fr.cea.ig.grools.fact.RelationType;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
@@ -48,7 +49,7 @@ public interface Reasoner extends Serializable, AutoCloseable {
 
     Reasoner            copy();
 
-    void                save( final File file);
+    void                save( final File file) throws IOException;
 
     Mode                getMode();
 
