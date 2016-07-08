@@ -49,7 +49,7 @@ public interface Reasoner extends Serializable, AutoCloseable {
 
     Reasoner            copy();
 
-    void                save( final File file) throws IOException;
+    void                save( final File file ) throws IOException;
 
     Mode                getMode();
 
