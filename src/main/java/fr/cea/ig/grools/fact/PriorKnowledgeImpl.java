@@ -153,12 +153,12 @@ public final class PriorKnowledgeImpl implements PriorKnowledge {
 
         PriorKnowledge that = (PriorKnowledge) o;
 
-        if (isDispensable   !=      that.getIsDispensable() ) return false;
-        if (isSpecific      !=      that.getIsSpecific()    ) return false;
         if (! name         .equals( that.getName()        ) ) return false;
         if (! source       .equals( that.getSource()      ) ) return false;
         if (! label        .equals( that.getLabel()       ) ) return false;
         if (! description  .equals( that.getDescription() ) ) return false;
+        if (isDispensable   !=      that.getIsDispensable() ) return false;
+        if (isSpecific      !=      that.getIsSpecific()    ) return false;
         if (prediction      !=      that.getPrediction()    ) return false;
         if (expectation     !=      that.getExpectation()   ) return false;
         return conclusion == that.getConclusion();

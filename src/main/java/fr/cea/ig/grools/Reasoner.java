@@ -4,7 +4,6 @@ import fr.cea.ig.grools.fact.Concept;
 import fr.cea.ig.grools.fact.Observation;
 import fr.cea.ig.grools.fact.PriorKnowledge;
 import fr.cea.ig.grools.fact.Relation;
-import fr.cea.ig.grools.fact.RelationType;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,7 +72,7 @@ public interface Reasoner extends Serializable, AutoCloseable {
 
     Set<Relation>       getRelationsWithTarget( Concept target );
 
-    Relation            getRelation( final Concept source, final Concept target, final RelationType type );
+    Relation            getRelation( final Concept source, final Concept target, final Enum<?> type );
 
     Set<Observation>    getObservations();
 

@@ -44,7 +44,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -70,7 +69,7 @@ public enum TruthValuePowerSet implements Set<TruthValueSet> {
     TFB ( TruthValueSet.T, TruthValueSet.F, TruthValueSet.B ),
     NTFB( TruthValueSet.N, TruthValueSet.T, TruthValueSet.F, TruthValueSet.B );
 
-    public static TruthValuePowerSet getByContent( @NonNull final Set<TruthValueSet> set ){
+    public static TruthValuePowerSet getByContent( @NonNull final Collection<TruthValueSet> set ){
         final EnumSet<TruthValuePowerSet>   tvset   = EnumSet.allOf( TruthValuePowerSet.class );
         final Iterator<TruthValuePowerSet>  it      = tvset.iterator();
         TruthValuePowerSet                  result  = TruthValuePowerSet.n;
@@ -104,7 +103,7 @@ public enum TruthValuePowerSet implements Set<TruthValueSet> {
     private final float falsehood;
 
 
-    TruthValuePowerSet( @NonNull final List<TruthValueSet> tvList ){
+    TruthValuePowerSet( @NonNull final Collection<TruthValueSet> tvList ){
         truthValuePowerSet = Collections.synchronizedSet( EnumSet.copyOf( tvList) );
         truth       = ( truthValuePowerSet.size() == 0) ? 0: ( float ) ( truthValuePowerSet.stream().mapToDouble( i -> i.getTruth() ).sum() ) / truthValuePowerSet.size() ;
         falsehood   = ( truthValuePowerSet.size() == 0) ? 0: ( float ) ( truthValuePowerSet.stream().mapToDouble( i -> i.getFalsehood() ).sum() ) / truthValuePowerSet.size();

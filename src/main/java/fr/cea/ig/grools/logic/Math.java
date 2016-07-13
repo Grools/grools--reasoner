@@ -37,10 +37,12 @@
 package fr.cea.ig.grools.logic;
 
 import fr.cea.ig.grools.fact.Observation;
-import fr.cea.ig.grools.fact.PriorKnowledge;
 import lombok.NonNull;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -78,8 +80,16 @@ public class Math {
         return TruthValueSet.getByContent( tvSet );
     }
 
+    public static TruthValueSet union( @NonNull final Collection<Observation> observations ){
+        final Set<TruthValue> tvSet = observations.stream()
+                                                  .map( Observation::getTruthValue )
+                                                  .collect( Collectors.toCollection( () -> EnumSet.noneOf(TruthValue.class) ) );
+        if( tvSet.size() > 1 ) tvSet.remove( TruthValue.n );
+        return TruthValueSet.getByContent( tvSet );
+    }
+
     // this function is designed to took truthValueSet from observation. Do not use it for another purpose
-    public static TruthValuePowerSet merge( @NonNull final Set<Observation> observations, @NonNull final Set<TruthValueSet> sets ){
+    public static TruthValuePowerSet merge( @NonNull final Collection<Observation> observations, @NonNull final Collection<TruthValueSet> sets ){
         final TruthValueSet truthValueSet = TruthValueSet.getByContent( observations.stream()
                                                                                     .map( Observation::getTruthValue )
                                                                                     .collect( Collectors.toCollection( () -> EnumSet.of(TruthValue.n) ) )
@@ -113,10 +123,18 @@ public class Math {
 
     public static TruthValuePowerSet merge( @NonNull final TruthValuePowerSet... values ){
         final Set<TruthValueSet> tvSet = Arrays.stream( values )
-                                               .filter( i -> i != TruthValuePowerSet.n && i != TruthValuePowerSet.N )
+                                               .filter( i -> i != TruthValuePowerSet.n )
                                                .map( TruthValuePowerSet::getTruthValuePowerSet )
                                                .reduce( EnumSet.noneOf(TruthValueSet.class), (x,y) -> {Set<TruthValueSet> z = EnumSet.noneOf(TruthValueSet.class); z.addAll( x ); z.addAll( y ); return  z;} );
         return TruthValuePowerSet.getByContent( tvSet );
+    }
+
+    public static TruthValueSet add( @NonNull final TruthValueSet truthValueSet, @NonNull final TruthValue... truthValues ){
+        return merge( truthValueSet, union(truthValues) );
+    }
+
+    public static TruthValuePowerSet add( @NonNull final TruthValuePowerSet truthValuePowerSet, @NonNull final TruthValueSet... truthValueSets ){
+        return merge( truthValuePowerSet, union(truthValueSets) );
     }
 
 
@@ -180,7 +198,7 @@ public class Math {
                     .count();
     }
 
-    public static TruthValueSet observedTruthValues( @NonNull final Set<Observation> observations ){
+    public static TruthValueSet observedTruthValues( @NonNull final Collection<Observation> observations ){
         final Set<TruthValue> set = EnumSet.noneOf( TruthValue.class);
         for( final Observation observation : observations)
             set.add( observation.getTruthValue() );

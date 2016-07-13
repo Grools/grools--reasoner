@@ -39,13 +39,11 @@ package fr.cea.ig.grools.logic;
 import lombok.Getter;
 import lombok.NonNull;
 
-import java.lang.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -61,7 +59,7 @@ public enum TruthValueSet implements Set<TruthValue> {
     F( false ),
     B( true, false );
 
-    public static TruthValueSet getByContent( @NonNull final Set<TruthValue> set ){
+    public static TruthValueSet getByContent( @NonNull final Collection<TruthValue> set ){
         final EnumSet<TruthValueSet> tvset = EnumSet.allOf( TruthValueSet.class );
         final Iterator<TruthValueSet>   it      = tvset.iterator();
         TruthValueSet                   result  = TruthValueSet.n;
@@ -96,7 +94,7 @@ public enum TruthValueSet implements Set<TruthValue> {
     private final float falsehood;
 
 
-    TruthValueSet( @NonNull final List<TruthValue> tvList ){
+    TruthValueSet( @NonNull final Collection<TruthValue> tvList ){
         truthValueSet = Collections.synchronizedSet( EnumSet.copyOf( tvList) );
         truth       = ( truthValueSet.size() == 0) ? 0: Math.counter( truthValueSet, TruthValue.t ) / (float)truthValueSet.size();
         falsehood   = ( truthValueSet.size() == 0) ? 0: Math.counter( truthValueSet, TruthValue.f ) / (float)truthValueSet.size();
