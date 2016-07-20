@@ -38,13 +38,12 @@ package fr.cea.ig.grools;
 
 import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.logic.TruthValueSet;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import java.util.EnumSet;
 import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * TruthValueSetTest
@@ -112,15 +111,6 @@ public class TruthValueSetTest {
         assertEquals( 0.5, TruthValueSet.B.getTruth(), 1e-15);
         assertEquals( 0.5, TruthValueSet.B.getFalsehood(), 1e-15);
         assertEquals( 2, TruthValueSet.B.size());
-    }
-
-    @Test
-    public void composition(){
-        assertTrue( TruthValueSet.T.contains( TruthValue.t ) );
-        assertTrue( TruthValueSet.F.contains( TruthValue.f ) );
-        assertTrue( TruthValueSet.B.contains( TruthValue.f ) );
-        assertTrue( TruthValueSet.B.contains( TruthValue.t ) );
-        assertFalse( TruthValueSet.B.contains( TruthValue.n ) );
     }
 
 

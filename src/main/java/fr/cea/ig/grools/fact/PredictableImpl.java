@@ -35,34 +35,66 @@
  */
 
 package fr.cea.ig.grools.fact;
-import fr.cea.ig.grools.logic.Conclusion;
+
+
+import fr.cea.ig.grools.logic.TruthValuePowerSet;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
 
 /**
- * PriorKnowledge
+ *
  */
 /*
  * @startuml
- * skinparam defaultFontName  Monospaced
- * interface PriorKnowledge extends Concept, Predictable{
- *  + getLabel()        : Label
- *  + getPrediction()   : TruthValuePowerSet
- *  + getExpectation()  : TruthValuePowerSet
- *  + getConclusion()   : Conclusion
- *  + getIsDispensable()  : boolean
- *  + getIsSpecific()   : boolean
- *  + setPrediction( TruthValuePowerSet values )
- *  + setExpectation( TruthValuePowerSet values )
- *  + setConclusion( Conclusion conclusion )
- *  + setIsDispensable( boolean value )
- *  + setIsSpecific( boolean value )
+ * class PredictableImpl implements Predictable{
+ *  - name          : String
+ *  - source        : String
+ *  - label         : String
+ *  - description   : String
+ *  - prediction    : TruthValuePowerSet
+ *  - type          : RelationType
+ *  - isSpecific    : boolean
  * }
  * @enduml
  */
-public interface PriorKnowledge extends Concept , Predictable, Expectable {
-    Conclusion                      getConclusion();
-    void                            setConclusion( Conclusion conclusion );
-    boolean                         getIsDispensable();
-    void                            setIsDispensable( boolean value );
-    boolean                         getIsSpecific();
-    void                            setIsSpecific( boolean value );
+public class PredictableImpl implements Predictable {
+    @Getter @NonNull
+    private final String name;
+    @Getter @NonNull
+    private final String source;
+    @Getter @NonNull
+    private final String label;
+    @Getter @NonNull
+    private final String description;
+    @Getter @Setter
+    @NonNull
+    private TruthValuePowerSet prediction;
+    @Getter
+    private final RelationType type = RelationType.PREDICTION;
+    private boolean isSpecific;
+
+
+
+    @Builder
+    @java.beans.ConstructorProperties({"name", "source", "label", "description", "prediction"})
+    public PredictableImpl(@NonNull final String name, @NonNull final String source, @NonNull final String label, @NonNull final String description, final TruthValuePowerSet expectation){
+        this.name           = name;
+        this.source         = source;
+        this.label          = label;
+        this.description    = description;
+        this.prediction    = ( prediction == null ) ? TruthValuePowerSet.n : prediction;
+    }
+
+
+    @Override
+    public boolean getIsSpecific( ) {
+        return isSpecific;
+    }
+
+    @Override
+    public void setIsSpecific( boolean isSpecific ) {
+        this.isSpecific = isSpecific;
+    }
 }

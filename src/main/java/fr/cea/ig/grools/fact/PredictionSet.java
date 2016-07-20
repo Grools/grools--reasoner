@@ -35,34 +35,15 @@
  */
 
 package fr.cea.ig.grools.fact;
-import fr.cea.ig.grools.logic.Conclusion;
-
 /**
- * PriorKnowledge
+ *
  */
 /*
  * @startuml
- * skinparam defaultFontName  Monospaced
- * interface PriorKnowledge extends Concept, Predictable{
- *  + getLabel()        : Label
- *  + getPrediction()   : TruthValuePowerSet
- *  + getExpectation()  : TruthValuePowerSet
- *  + getConclusion()   : Conclusion
- *  + getIsDispensable()  : boolean
- *  + getIsSpecific()   : boolean
- *  + setPrediction( TruthValuePowerSet values )
- *  + setExpectation( TruthValuePowerSet values )
- *  + setConclusion( Conclusion conclusion )
- *  + setIsDispensable( boolean value )
- *  + setIsSpecific( boolean value )
+ * interface PredictionSet{
  * }
+ * hide  PredictionSet fields
  * @enduml
  */
-public interface PriorKnowledge extends Concept , Predictable, Expectable {
-    Conclusion                      getConclusion();
-    void                            setConclusion( Conclusion conclusion );
-    boolean                         getIsDispensable();
-    void                            setIsDispensable( boolean value );
-    boolean                         getIsSpecific();
-    void                            setIsSpecific( boolean value );
+public interface PredictionSet extends ObservationSet, Predictable {
 }

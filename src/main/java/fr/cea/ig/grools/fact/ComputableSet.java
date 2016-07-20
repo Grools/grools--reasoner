@@ -35,34 +35,20 @@
  */
 
 package fr.cea.ig.grools.fact;
-import fr.cea.ig.grools.logic.Conclusion;
+
+import java.util.Collection;
 
 /**
- * PriorKnowledge
+ *
  */
 /*
  * @startuml
- * skinparam defaultFontName  Monospaced
- * interface PriorKnowledge extends Concept, Predictable{
- *  + getLabel()        : Label
- *  + getPrediction()   : TruthValuePowerSet
- *  + getExpectation()  : TruthValuePowerSet
- *  + getConclusion()   : Conclusion
- *  + getIsDispensable()  : boolean
- *  + getIsSpecific()   : boolean
- *  + setPrediction( TruthValuePowerSet values )
- *  + setExpectation( TruthValuePowerSet values )
- *  + setConclusion( Conclusion conclusion )
- *  + setIsDispensable( boolean value )
- *  + setIsSpecific( boolean value )
+ * class ComputableSet{
  * }
  * @enduml
  */
-public interface PriorKnowledge extends Concept , Predictable, Expectable {
-    Conclusion                      getConclusion();
-    void                            setConclusion( Conclusion conclusion );
-    boolean                         getIsDispensable();
-    void                            setIsDispensable( boolean value );
-    boolean                         getIsSpecific();
-    void                            setIsSpecific( boolean value );
+public interface ComputableSet<T,U,V> {
+    V union( final Collection<U> values );
+    U merge( final Collection<U> values );
+    U add( final U value, final Collection<T> values );
 }

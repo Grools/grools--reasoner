@@ -54,10 +54,11 @@ public enum ObservationType {
     private final EnumSet<RelationType> types;
     private final String                name;
 
-    ObservationType(final String name, final RelationType... names ){
+    @java.beans.ConstructorProperties({"name", "types"})
+    ObservationType(final String name, final RelationType... types ){
         this.name = name;
         this.types = EnumSet.noneOf( RelationType.class );
-        Collections.addAll( types, names );
+        Collections.addAll(this.types, types);
     }
 
     @Override

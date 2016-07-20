@@ -74,7 +74,7 @@ public final class ObservationImpl implements Observation {
     }
 
     @Builder
-    @java.beans.ConstructorProperties({"name", "source", "label", "description", "types", "truthValue"})
+    @java.beans.ConstructorProperties({"name", "source", "label", "description", "types", "prediction"})
     public ObservationImpl( @NonNull final String name, final String source,
                             final String label, final String description,
                             @NonNull final ObservationType type, final TruthValue truthValue ) {

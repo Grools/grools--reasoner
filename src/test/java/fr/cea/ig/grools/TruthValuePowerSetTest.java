@@ -38,12 +38,17 @@ package fr.cea.ig.grools;
 
 import fr.cea.ig.grools.logic.TruthValuePowerSet;
 import fr.cea.ig.grools.logic.TruthValueSet;
-import static org.junit.Assert.*;
 import org.junit.Test;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * TruthValuePowerSetTest
@@ -194,10 +199,4 @@ public class TruthValuePowerSetTest {
         }
     }
 
-    @Test
-    public void composition(){
-        assertTrue( TruthValuePowerSet.T.contains( TruthValueSet.T ) );
-        assertTrue( TruthValuePowerSet.TF.contains( TruthValueSet.T ) );
-        assertFalse( TruthValuePowerSet.B.contains( TruthValueSet.T ) );
-    }
 }

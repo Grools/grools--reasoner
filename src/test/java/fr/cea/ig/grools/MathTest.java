@@ -36,9 +36,6 @@
 
 package fr.cea.ig.grools;
 
-import fr.cea.ig.grools.fact.Observation;
-import fr.cea.ig.grools.fact.ObservationImpl;
-import fr.cea.ig.grools.fact.ObservationType;
 import fr.cea.ig.grools.logic.Math;
 import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.logic.TruthValuePowerSet;
@@ -58,14 +55,11 @@ public class MathTest {
         final TruthValue a = TruthValue.n;
         final TruthValue b = TruthValue.t;
         final TruthValue c = TruthValue.f;
-        assertEquals( TruthValueSet.T, Math.union( b, a, b) );
-        assertEquals( TruthValueSet.F, Math.union(c) );
-        assertEquals( TruthValueSet.B, Math.union(c,b,c) );
-        assertEquals( TruthValueSet.N, Math.union(a) );
-        assertEquals( TruthValueSet.B, Math.union( a,b,c ) );
-        assertEquals( TruthValueSet.T, Math.union( true ) );
-        assertEquals( TruthValueSet.F, Math.union( false ) );
-        assertEquals( TruthValueSet.B, Math.union( true, false ) );
+        assertEquals( TruthValueSet.T, TruthValue.union( b, a, b) );
+        assertEquals( TruthValueSet.F, TruthValue.union( c ) );
+        assertEquals( TruthValueSet.B, TruthValue.union(c, b, c) );
+        assertEquals( TruthValueSet.N, TruthValue.union( a ) );
+        assertEquals( TruthValueSet.B, TruthValue.union( a, b, c ) );
     }
 
     @Test
@@ -76,14 +70,14 @@ public class MathTest {
         final TruthValueSet d = TruthValueSet.F;
         final TruthValueSet e = TruthValueSet.B;
 
-        assertEquals( TruthValuePowerSet.T      , Math.union( a, c, a) );
-        assertEquals( TruthValuePowerSet.F      , Math.union(d) );
-        assertEquals( TruthValuePowerSet.TF     , Math.union(c,d,c) );
-        assertEquals( TruthValuePowerSet.B      , Math.union(e) );
-        assertEquals( TruthValuePowerSet.B      , Math.union(a,e) );
-        assertEquals( TruthValuePowerSet.TFB    , Math.union( e,d,c ) );
-        assertEquals( TruthValuePowerSet.TB     , Math.union( a,e,c ) );
-        assertEquals( TruthValuePowerSet.NTFB   , Math.union( d,a,e,c,b ) );
+        assertEquals( TruthValuePowerSet.T      , TruthValueSet.union( a, c, a) );
+        assertEquals( TruthValuePowerSet.F      , TruthValueSet.union(d) );
+        assertEquals( TruthValuePowerSet.TF     , TruthValueSet.union(c,d,c) );
+        assertEquals( TruthValuePowerSet.B      , TruthValueSet.union(e) );
+        assertEquals( TruthValuePowerSet.B      , TruthValueSet.union(a,e) );
+        assertEquals( TruthValuePowerSet.TFB    , TruthValueSet.union( e,d,c ) );
+        assertEquals( TruthValuePowerSet.TB     , TruthValueSet.union( a,e,c ) );
+        assertEquals( TruthValuePowerSet.NTFB   , TruthValueSet.union( d,a,e,c,b ) );
     }
 
     @Test
@@ -93,27 +87,13 @@ public class MathTest {
         final TruthValueSet c = TruthValueSet.T;
         final TruthValueSet d = TruthValueSet.F;
         final TruthValueSet e = TruthValueSet.B;
-        assertEquals( TruthValueSet.T, Math.merge(c,a) );
-        assertEquals( TruthValueSet.B, Math.merge(c,a,d) );
-        assertEquals( TruthValueSet.F, Math.merge(b,d) );
-        assertEquals( TruthValueSet.B, Math.merge(b,e) );
+        assertEquals( TruthValueSet.T, TruthValueSet.merge(c,a) );
+        assertEquals( TruthValueSet.B, TruthValueSet.merge(c,a,d) );
+        assertEquals( TruthValueSet.F, TruthValueSet.merge(b,d) );
+        assertEquals( TruthValueSet.B, TruthValueSet.merge(b,e) );
 
     }
 
-    @Test
-    public void mergeObservationWithSetOfTruthValueSet(){
-        final Observation observation = new ObservationImpl( "Exp_Test",
-                                                             "Experimentation LABGeM" ,
-                                                             "",
-                                                             "",
-                                                             ObservationType.EXPERIMENTATION,
-                                                             TruthValue.t);
-        final Set<Observation> set = new HashSet<>(  );
-        set.add( observation );
-        EnumSet<TruthValueSet> ets = EnumSet.of( TruthValueSet.n );
-        TruthValuePowerSet result = Math.merge( set, ets );
-        assertEquals( TruthValuePowerSet.T, result);
-    }
 
     @Test
     public void TruthValueSetIntersection() throws Exception {
@@ -122,11 +102,11 @@ public class MathTest {
         final TruthValueSet c = TruthValueSet.T;
         final TruthValueSet d = TruthValueSet.F;
         final TruthValueSet e = TruthValueSet.B;
-         assertEquals( TruthValueSet.n, Math.intersection(c,a) );
-         assertEquals( TruthValueSet.n, Math.intersection(c,b) );
-         assertEquals( TruthValueSet.T, Math.intersection(c,c) );
-         assertEquals( TruthValueSet.T, Math.intersection(c,e) );
-         assertEquals( TruthValueSet.F, Math.intersection(d,e) );
+         assertEquals( TruthValueSet.n, TruthValueSet.intersection(c,a) );
+         assertEquals( TruthValueSet.n, TruthValueSet.intersection(c,b) );
+         assertEquals( TruthValueSet.T, TruthValueSet.intersection(c,c) );
+         assertEquals( TruthValueSet.T, TruthValueSet.intersection(c,e) );
+         assertEquals( TruthValueSet.F, TruthValueSet.intersection(d,e) );
     }
 
     @Test
@@ -139,13 +119,13 @@ public class MathTest {
         final TruthValuePowerSet f = TruthValuePowerSet.NTF;
         final TruthValuePowerSet g = TruthValuePowerSet.NTFB;
         final TruthValuePowerSet h = TruthValuePowerSet.B;
-         assertEquals( TruthValuePowerSet.n, Math.intersection(c,a) );
-         assertEquals( TruthValuePowerSet.n, Math.intersection(c,b) );
-         assertEquals( TruthValuePowerSet.T, Math.intersection(c,c) );
-         assertEquals( TruthValuePowerSet.T, Math.intersection(c,e) );
-         assertEquals( TruthValuePowerSet.F, Math.intersection(d,e) );
-         assertEquals( TruthValuePowerSet.NTF, Math.intersection(f,g) );
-         assertEquals( TruthValuePowerSet.n, Math.intersection(c,h) );
+         assertEquals( TruthValuePowerSet.n, TruthValuePowerSet.intersection(c,a) );
+         assertEquals( TruthValuePowerSet.n, TruthValuePowerSet.intersection(c,b) );
+         assertEquals( TruthValuePowerSet.T, TruthValuePowerSet.intersection(c,c) );
+         assertEquals( TruthValuePowerSet.T, TruthValuePowerSet.intersection(c,e) );
+         assertEquals( TruthValuePowerSet.F, TruthValuePowerSet.intersection(d,e) );
+         assertEquals( TruthValuePowerSet.NTF, TruthValuePowerSet.intersection(f,g) );
+         assertEquals( TruthValuePowerSet.n, TruthValuePowerSet.intersection(c,h) );
     }
 
     @Test
@@ -153,9 +133,9 @@ public class MathTest {
         final TruthValueSet a = TruthValueSet.T;
         final TruthValueSet b = TruthValueSet.F;
         final TruthValueSet c = TruthValueSet.B;
-         assertEquals( TruthValueSet.F, Math.complement(a,c) );
-         assertEquals( TruthValueSet.T, Math.complement(b,c) );
-         assertEquals( TruthValueSet.F, Math.complement(a,b) );
+         assertEquals( TruthValueSet.F, TruthValueSet.complement(a,c) );
+         assertEquals( TruthValueSet.T, TruthValueSet.complement(b,c) );
+         assertEquals( TruthValueSet.F, TruthValueSet.complement(a,b) );
     }
 
     @Test
@@ -163,11 +143,11 @@ public class MathTest {
         final TruthValueSet a = TruthValueSet.T;
         final TruthValueSet b = TruthValueSet.F;
         final TruthValueSet c = TruthValueSet.B;
-         assertEquals( TruthValueSet.n, Math.difference(a,c) );
-         assertEquals( TruthValueSet.F, Math.difference(c,a) );
-         assertEquals( TruthValueSet.n, Math.difference(b,c) );
-         assertEquals( TruthValueSet.T, Math.difference(c,b) );
-         assertEquals( TruthValueSet.T, Math.difference(a,b) );
+         assertEquals( TruthValueSet.n, TruthValueSet.difference(a,c) );
+         assertEquals( TruthValueSet.F, TruthValueSet.difference(c,a) );
+         assertEquals( TruthValueSet.n, TruthValueSet.difference(b,c) );
+         assertEquals( TruthValueSet.T, TruthValueSet.difference(c,b) );
+         assertEquals( TruthValueSet.T, TruthValueSet.difference(a,b) );
     }
 
     @Test
@@ -176,10 +156,10 @@ public class MathTest {
         final TruthValuePowerSet b = TruthValuePowerSet.F;
         final TruthValuePowerSet c = TruthValuePowerSet.B;
         final TruthValuePowerSet d = TruthValuePowerSet.TF;
-         assertEquals( TruthValuePowerSet.B, Math.complement(a,c) );
-         assertEquals( TruthValuePowerSet.B, Math.complement(b,c) );
-         assertEquals( TruthValuePowerSet.F, Math.complement(a,b) );
-         assertEquals( TruthValuePowerSet.F, Math.complement(a,d) );
+         assertEquals( TruthValuePowerSet.B, TruthValuePowerSet.complement(a,c) );
+         assertEquals( TruthValuePowerSet.B, TruthValuePowerSet.complement(b,c) );
+         assertEquals( TruthValuePowerSet.F, TruthValuePowerSet.complement(a,b) );
+         assertEquals( TruthValuePowerSet.F, TruthValuePowerSet.complement(a,d) );
     }
 
     @Test
@@ -187,9 +167,9 @@ public class MathTest {
         final TruthValuePowerSet a = TruthValuePowerSet.T;
         final TruthValuePowerSet b = TruthValuePowerSet.F;
         final TruthValuePowerSet c = TruthValuePowerSet.B;
-         assertEquals( TruthValuePowerSet.T, Math.difference(a,c) );
-         assertEquals( TruthValuePowerSet.F, Math.difference(b,c) );
-         assertEquals( TruthValuePowerSet.T, Math.difference(a,b) );
+         assertEquals( TruthValuePowerSet.T, TruthValuePowerSet.difference(a,c) );
+         assertEquals( TruthValuePowerSet.F, TruthValuePowerSet.difference(b,c) );
+         assertEquals( TruthValuePowerSet.T, TruthValuePowerSet.difference(a,b) );
     }
 
     @Test

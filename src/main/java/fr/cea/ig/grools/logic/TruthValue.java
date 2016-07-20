@@ -36,7 +36,13 @@
 
 package fr.cea.ig.grools.logic;
 
+import lombok.Getter;
 import lombok.NonNull;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.stream.Collectors;
 
 /**
  * TruthValue
@@ -48,9 +54,13 @@ public enum TruthValue{
     f( "f", false, 0, 1 );
 
     @NonNull
+    @Getter
     private final String name;
+    @Getter
     private final Boolean value;
+    @Getter
     private final float truth;
+    @Getter
     private final float falsehood;
 
     TruthValue(@NonNull final String name, final Boolean value, float truth, float falsehood){
@@ -69,5 +79,16 @@ public enum TruthValue{
     @Override
     public String toString(){
         return name;
+    }
+
+    public static TruthValueSet union( @NonNull final TruthValue... values){
+        return union( Arrays.asList( values )
+                            .stream()
+                            .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValue.class))));
+    }
+
+    public static TruthValueSet union(@NonNull final Collection<TruthValue> values){
+        if( values.size() > 1 ) values.remove( TruthValue.n );
+        return TruthValueSet.getByContent( values );
     }
 }

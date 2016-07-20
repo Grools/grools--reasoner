@@ -35,7 +35,15 @@
  */
 
 package fr.cea.ig.grools.fact;
+
 import fr.cea.ig.grools.logic.TruthValue;
+import fr.cea.ig.grools.logic.TruthValueSet;
+import lombok.NonNull;
+
+import java.util.Collection;
+import java.util.EnumSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Observation
@@ -45,11 +53,19 @@ import fr.cea.ig.grools.logic.TruthValue;
  * skinparam defaultFontName  Monospaced
  * interface Observation extends Concept{
  *  + getType()        : ObservationType
- *  + getTruthValue()  : TruthValue
+ *  + getPrediction()  : TruthValue
  * }
  * @enduml
  */
 public interface Observation extends Concept {
     ObservationType     getType();
     TruthValue          getTruthValue();
+
+    static TruthValueSet union(@NonNull final Collection<Observation> observations){
+        Set<TruthValue> truthValueSet = observations.stream()
+                                                    .map( Observation::getTruthValue )
+                                                    .collect( Collectors.toCollection(() -> EnumSet.noneOf(TruthValue.class)) );
+
+        return TruthValue.union(truthValueSet);
+    }
 }

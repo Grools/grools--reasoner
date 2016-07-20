@@ -43,6 +43,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -51,13 +52,20 @@ import java.util.stream.IntStream;
 /**
  * TruthValueSet
  */
-public enum TruthValueSet implements Set<TruthValue> {
+public enum TruthValueSet {
 
     n(  ),
     N( TruthValue.n ),
     T( true ),
     F( false ),
     B( true, false );
+
+    public static TruthValueSet getByContent( @NonNull final TruthValue... set ){
+        return getByContent( Arrays.asList( set )
+                                   .stream()
+                                   .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValue.class))) );
+    }
+
 
     public static TruthValueSet getByContent( @NonNull final Collection<TruthValue> set ){
         final EnumSet<TruthValueSet> tvset = EnumSet.allOf( TruthValueSet.class );
@@ -120,83 +128,85 @@ public enum TruthValueSet implements Set<TruthValue> {
         name        = "∅";
     }
 
-    public TruthValueSet merge( @NonNull final TruthValueSet tvSet ){
-        return Math.merge( this, tvSet );
-    }
-
-    public TruthValueSet intersection( @NonNull final TruthValueSet tvSet ){
-        return Math.intersection( this, tvSet );
-    }
-
-    @Override
-    public int size() {
-        return truthValueSet.size();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return truthValueSet.isEmpty();
-    }
-
-    @Override
-    public boolean contains( final Object o ) {
-        return truthValueSet.contains( o );
-    }
-
-    @Override
-    public Iterator<TruthValue> iterator() {
-        return truthValueSet.iterator();
-    }
-
-    @Override
-    public Object[] toArray() {
-        return truthValueSet.toArray();
-    }
-
-    @Override
-    public <T> T[] toArray( final T[] a ) {
-        return truthValueSet.toArray( a );
-    }
-
-    @Override
-    public boolean add( final TruthValue aTruthValue ) {
-        return false;
-    }
-
-    @Override
-    public boolean remove( final Object o ) {
-        return false;
-    }
-
-    @Override
-    public boolean containsAll( final Collection<?> c ) {
-        return truthValueSet.containsAll( c );
-    }
-
-    @Override
-    public boolean addAll( final Collection<? extends TruthValue> c ) {
-        return false;
-    }
-
-    @Override
-    public boolean retainAll( final Collection<?> c ) {
-        return false;
-    }
-
-    @Override
-    public boolean removeAll( final Collection<?> c ) {
-        return false;
-    }
-
-    @Override
-    public void clear() {
-
-    }
-
     @Override
     public String toString(){
         return name;
     }
 
+    public int size(){
+        return truthValueSet.size();
+    }
+
+    public static TruthValuePowerSet union( @NonNull final TruthValueSet... values){
+        return union( Arrays.asList( values )
+                            .stream()
+                            .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValueSet.class))) );
+    }
+
+    public static TruthValuePowerSet union( @NonNull final Collection<TruthValueSet> values){
+        if( values.size() > 1 ) values.remove( TruthValueSet.n );
+        return TruthValuePowerSet.getByContent( values );
+    }
+
+    public static TruthValueSet merge( @NonNull final TruthValueSet... values){
+        return merge( Arrays.asList( values )
+                            .stream()
+                            .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValueSet.class))) );
+    }
+
+    public static TruthValueSet merge( @NonNull final Collection<TruthValueSet> values){
+        final Set<TruthValue> tvSet = values.stream(  )
+                                               .map( i-> i.getTruthValueSet() )
+                                               .reduce( EnumSet.noneOf(TruthValue.class), (x,y) -> {EnumSet<TruthValue> z = EnumSet.noneOf(TruthValue.class); z.addAll( x ); z.addAll( y ); return z;} );
+        if( tvSet.size() > 1 ) tvSet.remove( TruthValueSet.n );
+        return TruthValueSet.getByContent( tvSet );
+    }
+
+
+    // Difference: Set of members that belong to set A "and not" set B.
+    public static TruthValueSet difference( @NonNull final TruthValueSet a , @NonNull final TruthValueSet b ){
+        Set<TruthValue> result = EnumSet.noneOf(TruthValue.class);
+        result.addAll( a.getTruthValueSet() );
+        result.removeAll( b.getTruthValueSet() );
+        return TruthValueSet.getByContent( result );
+    }
+
+    // Complement: Set of members that belong to set B "and not" set A.
+    public static TruthValueSet complement( @NonNull final TruthValueSet a , @NonNull final TruthValueSet b ){
+        return difference(b,a);
+    }
+
+    public static TruthValueSet intersection( @NonNull final TruthValueSet... values ){
+        return intersection( Arrays.asList( values )
+                                   .stream()
+                                   .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValueSet.class))) );
+    }
+
+
+    public static TruthValueSet intersection( @NonNull final Collection<TruthValueSet> values ){
+        return values.stream()
+                     .reduce( (x,y) -> { final Set<TruthValue> tmp = EnumSet.noneOf(TruthValue.class); tmp.addAll( x.getTruthValueSet() ); tmp.retainAll( y.getTruthValueSet() ); return TruthValueSet.getByContent( tmp ) ; } )
+                     .orElse( TruthValueSet.n );
+    }
+
+    public static TruthValueSet add( @NonNull final TruthValueSet truthValueSet, @NonNull final TruthValue... truthValues ){
+        return add( truthValueSet, Arrays.asList(truthValues)
+                                         .stream()
+                                         .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValue.class)))  );
+    }
+
+    public static TruthValueSet add( @NonNull final TruthValueSet truthValueSet, @NonNull final Collection<TruthValue> truthValues ){
+        final Set<TruthValue> tvSet = new HashSet<>( truthValues.size() + truthValueSet.getTruthValueSet().size() );
+        tvSet.addAll(truthValues);
+        tvSet.addAll( truthValueSet.getTruthValueSet() );
+        return TruthValueSet.getByContent( tvSet );
+    }
+
+    public static TruthValueSet remove( @NonNull final TruthValueSet truthValueSet, @NonNull final Collection<TruthValue> truthValues ){
+        final Set<TruthValue> tvSet = new HashSet<>( truthValueSet.getTruthValueSet().size() );
+        tvSet.addAll( truthValueSet.getTruthValueSet() );
+        tvSet.removeAll(truthValues);
+        return TruthValueSet.getByContent( tvSet );
+    }
 
 }
