@@ -88,7 +88,9 @@ public enum TruthValue{
     }
 
     public static TruthValueSet union(@NonNull final Collection<TruthValue> values){
-        if( values.size() > 1 ) values.remove( TruthValue.n );
+        if( values.isEmpty() )
+            values.add( TruthValue.n );
+        else if( values.size() > 1 ) values.remove( TruthValue.n );
         return TruthValueSet.getByContent( values );
     }
 }

@@ -144,6 +144,8 @@ public enum TruthValueSet {
     }
 
     public static TruthValuePowerSet union( @NonNull final Collection<TruthValueSet> values){
+        if( values.isEmpty() )
+            values.add( TruthValueSet.n );
         if( values.size() > 1 ) values.remove( TruthValueSet.n );
         return TruthValuePowerSet.getByContent( values );
     }

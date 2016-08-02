@@ -199,4 +199,35 @@ public class TruthValuePowerSetTest {
         }
     }
 
+    @Test
+    public void merge(){
+        assertEquals( TruthValuePowerSet.T  , TruthValuePowerSet.merge( TruthValuePowerSet.T, TruthValuePowerSet.n  ) );
+        assertEquals( TruthValuePowerSet.n  , TruthValuePowerSet.merge( TruthValuePowerSet.n, TruthValuePowerSet.n  ) );
+        assertEquals( TruthValuePowerSet.N  , TruthValuePowerSet.merge( TruthValuePowerSet.n, TruthValuePowerSet.N  ) );
+        assertEquals( TruthValuePowerSet.NT , TruthValuePowerSet.merge( TruthValuePowerSet.T, TruthValuePowerSet.N  ) );
+        assertEquals( TruthValuePowerSet.TF , TruthValuePowerSet.merge( TruthValuePowerSet.F, TruthValuePowerSet.T  ) );
+        assertEquals( TruthValuePowerSet.F  , TruthValuePowerSet.merge( TruthValuePowerSet.F, TruthValuePowerSet.n  ) );
+        assertEquals( TruthValuePowerSet.NTF, TruthValuePowerSet.merge( TruthValuePowerSet.F, TruthValuePowerSet.NT ) );
+    }
+
+
+    @Test
+    public void fill(){
+         assertEquals( TruthValuePowerSet.T, TruthValuePowerSet.fill( TruthValuePowerSet.T, TruthValuePowerSet.N  ) );
+         assertEquals( TruthValuePowerSet.F, TruthValuePowerSet.fill( TruthValuePowerSet.F, TruthValuePowerSet.N  ) );
+         assertEquals( TruthValuePowerSet.TF, TruthValuePowerSet.fill( TruthValuePowerSet.T, TruthValuePowerSet.F, TruthValuePowerSet.N  ) );
+    }
+
+    @Test
+    public void add(){
+        assertEquals( TruthValuePowerSet.T  , TruthValuePowerSet.add( TruthValuePowerSet.T, TruthValueSet.n  ) );
+        assertEquals( TruthValuePowerSet.N  , TruthValuePowerSet.add( TruthValuePowerSet.n, TruthValueSet.n  ) );
+        assertEquals( TruthValuePowerSet.N  , TruthValuePowerSet.add( TruthValuePowerSet.N, TruthValueSet.n  ) );
+        assertEquals( TruthValuePowerSet.F  , TruthValuePowerSet.add( TruthValuePowerSet.n, TruthValueSet.F  ) );
+        assertEquals( TruthValuePowerSet.T  , TruthValuePowerSet.add( TruthValuePowerSet.T, TruthValueSet.N  ) );
+        assertEquals( TruthValuePowerSet.T  , TruthValuePowerSet.add( TruthValuePowerSet.N, TruthValueSet.T  ) );
+        assertEquals( TruthValuePowerSet.TF , TruthValuePowerSet.add( TruthValuePowerSet.F, TruthValueSet.T  ) );
+        assertEquals( TruthValuePowerSet.F  , TruthValuePowerSet.add( TruthValuePowerSet.F, TruthValueSet.n  ) );
+        assertEquals( TruthValuePowerSet.FB , TruthValuePowerSet.add( TruthValuePowerSet.F, TruthValueSet.B ) );
+    }
 }

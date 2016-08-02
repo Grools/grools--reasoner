@@ -163,8 +163,10 @@ public enum TruthValuePowerSet {
 
 
     public static TruthValuePowerSet fill( @NonNull final Collection<TruthValuePowerSet> values){
+        if ( values.isEmpty() )
+            values.add(TruthValuePowerSet.n);
+        else if( values.size() > 1 ) values.remove(TruthValuePowerSet.N);
         final Set<TruthValueSet> tvSet = merge( values ).getTruthValuePowerSet();
-        if( tvSet.size() > 1 ) tvSet.remove( TruthValueSet.N );
         return TruthValuePowerSet.getByContent( tvSet );
     }
 
@@ -199,11 +201,14 @@ public enum TruthValuePowerSet {
                                          .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValueSet.class)))  );
     }
 
-    public static TruthValuePowerSet add( @NonNull final TruthValuePowerSet truthValueSet, @NonNull final Collection<TruthValueSet> truthValues ){
-        final Set<TruthValueSet> tvSet = new HashSet<>(truthValues.size() + truthValueSet.getTruthValuePowerSet().size() );
-        tvSet.addAll(truthValues);
-        tvSet.addAll( truthValueSet.getTruthValuePowerSet() );
-        return TruthValuePowerSet.getByContent( tvSet );
+    public static TruthValuePowerSet add( @NonNull final TruthValuePowerSet truthValuePowerSet, @NonNull final Collection<TruthValueSet> truthValues ){
+        final Set<TruthValueSet> truthValueSets = truthValues.stream()
+                                                    .filter( i -> i != TruthValueSet.n && i != TruthValueSet.N )
+                                                    .collect( Collectors.toSet( ) );
+        if( truthValuePowerSet != TruthValuePowerSet.N &&  truthValuePowerSet != TruthValuePowerSet.n )
+            truthValueSets.addAll( truthValuePowerSet.getTruthValuePowerSet() );
+
+        return (truthValueSets.size() == 0 )? TruthValuePowerSet.N : TruthValuePowerSet.getByContent( truthValueSets );
     }
 
     public static TruthValuePowerSet remove( @NonNull final TruthValuePowerSet truthValueSet, @NonNull final TruthValueSet... truthValues ){

@@ -35,16 +35,48 @@
  */
 
 package fr.cea.ig.grools;
-/**
- *
- */
-/*
- * @startuml
- * class Observation{
- * }
- * @enduml
- */
+
+import fr.cea.ig.grools.fact.Observation;
+import fr.cea.ig.grools.fact.ObservationImpl;
+import fr.cea.ig.grools.fact.ObservationType;
+import fr.cea.ig.grools.logic.TruthValue;
+import fr.cea.ig.grools.logic.TruthValueSet;
+import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+
 public class ObservationTest {
 
+    @Test
+    public void union_isT(){
+        final Observation o = ObservationImpl.builder()
+                                             .name("o1")
+                                             .type(ObservationType.COMPUTATION)
+                                             .truthValue(TruthValue.t)
+                                             .build();
+        TruthValueSet v = Observation.union( o );
+        assertEquals( TruthValueSet.T, v);
+    }
+
+    @Test
+    public void union_isN(){
+        final Observation o = ObservationImpl.builder()
+                                             .name("o1")
+                                             .type(ObservationType.COMPUTATION)
+                                             .truthValue(TruthValue.n)
+                                             .build();
+        TruthValueSet v = Observation.union( o );
+        assertEquals( TruthValueSet.N, v);
+    }
+
+    @Test
+    public void union_with_empty_observation_set_isN(){
+        final Set<Observation> observations = new HashSet<>();
+        TruthValueSet v = Observation.union( observations );
+        assertEquals( TruthValueSet.N, v);
+    }
 
 }
