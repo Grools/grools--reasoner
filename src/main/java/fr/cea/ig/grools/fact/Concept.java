@@ -49,6 +49,7 @@ import java.io.Serializable;
  * @enduml
  */
 public interface Concept extends Serializable, Cloneable {
+
     String getName();
     String getSource();
     String getLabel();

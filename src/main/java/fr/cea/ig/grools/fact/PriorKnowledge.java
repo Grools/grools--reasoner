@@ -36,6 +36,7 @@
 
 package fr.cea.ig.grools.fact;
 import fr.cea.ig.grools.logic.Conclusion;
+import fr.cea.ig.grools.logic.TruthValuePowerSet;
 
 /**
  * PriorKnowledge
@@ -43,7 +44,7 @@ import fr.cea.ig.grools.logic.Conclusion;
 /*
  * @startuml
  * skinparam defaultFontName  Monospaced
- * interface PriorKnowledge extends Concept, Predictable{
+ * interface PriorKnowledge extends Concept{
  *  + getLabel()        : Label
  *  + getPrediction()   : TruthValuePowerSet
  *  + getExpectation()  : TruthValuePowerSet
@@ -58,11 +59,16 @@ import fr.cea.ig.grools.logic.Conclusion;
  * }
  * @enduml
  */
-public interface PriorKnowledge extends Concept , Predictable, Expectable {
+public interface PriorKnowledge extends Concept{
     Conclusion                      getConclusion();
     void                            setConclusion( Conclusion conclusion );
-    boolean                         getIsDispensable();
-    void                            setIsDispensable( boolean value );
+    TruthValuePowerSet              getPrediction();
+    void                            setPrediction( final TruthValuePowerSet values );
     boolean                         getIsSpecific();
-    void                            setIsSpecific( boolean value );
+    void                            setIsSpecific( boolean isSpecific );
+    boolean                         getIsDispensable();
+    void                            setIsDispensable( boolean isSpecific );
+    TruthValuePowerSet              getExpectation( );
+    void                            setExpectation( final TruthValuePowerSet values );
+
 }

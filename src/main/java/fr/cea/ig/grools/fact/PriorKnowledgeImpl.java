@@ -48,8 +48,6 @@ import lombok.Setter;
  */
 public final class PriorKnowledgeImpl implements PriorKnowledge {
 
-    private static final long serialVersionUID = 5468848075108935740L;
-
     @Getter
     private final String name;
 
