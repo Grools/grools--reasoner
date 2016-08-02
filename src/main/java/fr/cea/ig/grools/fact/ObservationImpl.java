@@ -45,6 +45,7 @@ import lombok.NonNull;
  * ObservationImpl
  */
 public final class ObservationImpl implements Observation {
+
     @Getter
     private final String name;
     @Getter
@@ -119,7 +120,6 @@ public final class ObservationImpl implements Observation {
         if (!description.equals(that.getDescription())) return false;
         if (type != that.getType()) return false;
         return truthValue == that.getTruthValue();
-
     }
 
     @Override

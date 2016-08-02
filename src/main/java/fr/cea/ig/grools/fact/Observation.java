@@ -40,6 +40,7 @@ import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.logic.TruthValueSet;
 import lombok.NonNull;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Set;
@@ -60,6 +61,12 @@ import java.util.stream.Collectors;
 public interface Observation extends Concept {
     ObservationType     getType();
     TruthValue          getTruthValue();
+
+    static TruthValueSet union(@NonNull final Observation... observations){
+         return union(Arrays.asList(observations)
+                                   .stream()
+                                   .collect( Collectors.toSet() ));
+    }
 
     static TruthValueSet union(@NonNull final Collection<Observation> observations){
         Set<TruthValue> truthValueSet = observations.stream()
