@@ -44,6 +44,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -61,8 +62,6 @@ import java.util.EnumSet;
  */
 public final class Mode implements Serializable {
 
-    private static final long serialVersionUID = 3631557000997944353L;
-
     @NonNull
     @Getter
     private final String mode;
@@ -72,27 +71,18 @@ public final class Mode implements Serializable {
 
     public Mode(@NonNull final String mode) {
         this.mode = mode;
-        this.variants = EnumSet.of(VariantMode.NORMAL);
+        this.variants = Arrays.stream( mode.split( "-" ) )
+                              .map( String::toUpperCase )
+                              .map( VariantMode::valueOf )
+                              .collect( Collectors.toCollection( () -> EnumSet.noneOf( VariantMode.class ) ) );
     }
 
-    public Mode(@NonNull final String mode, @NonNull final EnumSet<VariantMode> variants) {
-        this.mode       = mode;
-        this.variants   = variants;
-    }
-
-    public void addVariants(@NonNull final VariantMode... vs){
-        final EnumSet<VariantMode> vm = EnumSet.copyOf(this.variants);
-        Arrays.stream(vs).forEach(variants::add);
-    }
-
-    public void removeVariants(@NonNull final VariantMode... vs){
-        Arrays.stream(vs).forEach(variants::remove);
-    }
 
     @NonNull @Override
     public String toString() { return mode; }
 
-    public static final Mode NORMAL = new Mode( "normal" );
-    public static final Mode SPECIFIC   = new Mode( "specific" );
-    public static final Mode DISPENSABLE   = new Mode( "dispensable" );
+    public static final Mode NORMAL                 = new Mode( "normal" );
+    public static final Mode NORMAL_SPECIFIC        = new Mode( "normal-specific" );
+    public static final Mode DISPENSABLE            = new Mode( "dispensable" );
+    public static final Mode DISPENSABLE_SPECIFIC   = new Mode( "dispensable-specific" );
 }
