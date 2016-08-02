@@ -35,15 +35,17 @@
  */
 
 package fr.cea.ig.grools.fact;
+import fr.cea.ig.grools.logic.Qualifier;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
+
+import java.util.EnumSet;
 
 /**
  * RelationImpl
  */
 public final class RelationImpl implements Relation {
-
-    private static final long serialVersionUID = 857073565638296917L;
 
     @Getter
     private final Concept source;
@@ -54,6 +56,9 @@ public final class RelationImpl implements Relation {
     @Getter
     private final Enum<?> type;
 
+    @Getter @Setter
+    private EnumSet<Qualifier> qualifiers;
+
     private final int hash;
 
     private static int hashCalculation( @NonNull final Concept source, @NonNull final Concept target, @NonNull final Enum<?> type){
@@ -63,12 +68,18 @@ public final class RelationImpl implements Relation {
         return result;
     }
 
+    @java.beans.ConstructorProperties( {"source", "target", "type", "qualifier"} )
+    public RelationImpl( @NonNull final Concept source, @NonNull final Concept target, @NonNull final Enum<?> type, @NonNull final EnumSet<Qualifier> qualifiers){
+        this.source     = source;
+        this.target     = target;
+        this.type       = type;
+        this.qualifiers = qualifiers;
+        this.hash       = hashCalculation( source, target, type );
+    }
+
     @java.beans.ConstructorProperties( {"source", "target", "type"} )
     public RelationImpl( @NonNull final Concept source, @NonNull final Concept target, @NonNull final Enum<?> type){
-        this.source = source;
-        this.target = target;
-        this.type   = type;
-        this.hash   = hashCalculation(source, target, type);
+        this( source, target, type, EnumSet.noneOf( Qualifier.class ) );
     }
 
     @java.beans.ConstructorProperties( {"source", "target"} )
@@ -82,15 +93,16 @@ public final class RelationImpl implements Relation {
         final String s1 = (source != null )? source.getName() : "∅";
         final String s2 = (target != null )? target.getName() : "∅";
         return "Relation(\n" +
-                       "    source   = " + s1      + '\n' +
-                       "    target   = " + s2      + '\n' +
-                       "    type     = " + type    + '\n' +
+                       "    source   = " + s1           + '\n' +
+                       "    target   = " + s2           + '\n' +
+                       "    type     = " + type         + '\n' +
+                       "    qualifier= " + qualifiers   + '\n' +
                        ")";
     }
 
     @Override
     public Object clone(){
-        return new RelationImpl( source, target, type);
+        return new RelationImpl( source, target, type, qualifiers );
     }
 
     @Override
@@ -100,8 +112,9 @@ public final class RelationImpl implements Relation {
 
         Relation relation = (Relation) o;
 
-        if (!source.equals(relation.getSource())) return false;
-        if (!target.equals(relation.getTarget())) return false;
+        if ( !source.equals( relation.getSource() ) )           return false;
+        if ( !target.equals( relation.getTarget() ) )           return false;
+        if ( !qualifiers.equals( relation.getQualifiers() ) )   return false;
         return type.equals(relation.getType());
 
     }

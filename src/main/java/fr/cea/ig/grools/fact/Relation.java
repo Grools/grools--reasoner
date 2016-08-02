@@ -36,7 +36,10 @@
 
 package fr.cea.ig.grools.fact;
 
+import fr.cea.ig.grools.logic.Qualifier;
+
 import java.io.Serializable;
+import java.util.EnumSet;
 
 /**
  * Relation
@@ -47,6 +50,8 @@ import java.io.Serializable;
  * interface Relation extends Serializable {
  *  + getSource()   : Concept
  *  + getTarget()   : Concept
+ *  + getType()     : Enum<?>
+ *  + getQualifier():Qualifier
  * }
  * @enduml
  */
@@ -56,4 +61,8 @@ public interface Relation extends Serializable, Cloneable {
     Concept getTarget();
 
     Enum<?> getType();
+
+    EnumSet<Qualifier> getQualifiers( );
+
+    void setQualifiers( final EnumSet<Qualifier> qualifier);
 }
