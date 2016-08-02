@@ -48,6 +48,7 @@ import java.util.Collection;
  * @enduml
  */
 public interface ComputableSet<T,U,V> {
+
     V union( final Collection<U> values );
     U merge( final Collection<U> values );
     U add( final U value, final Collection<T> values );
