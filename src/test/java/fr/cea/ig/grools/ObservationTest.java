@@ -34,67 +34,17 @@
  *
  */
 
-package fr.cea.ig.grools.fact;
-
-
-import fr.cea.ig.grools.logic.TruthValuePowerSet;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-
+package fr.cea.ig.grools;
 /**
  *
  */
 /*
  * @startuml
- * class PredictableImpl implements Predictable{
- *  - name          : String
- *  - source        : String
- *  - label         : String
- *  - description   : String
- *  - prediction    : TruthValuePowerSet
- *  - type          : RelationType
- *  - isSpecific    : boolean
+ * class Observation{
  * }
  * @enduml
  */
-public class PredictableImpl implements Predictable {
-    @Getter @NonNull
-    private final String name;
-    @Getter @NonNull
-    private final String source;
-    @Getter @NonNull
-    private final String label;
-    @Getter @NonNull
-    private final String description;
-    @Getter @Setter
-    @NonNull
-    private TruthValuePowerSet prediction;
-    @Getter
-    private final RelationType type = RelationType.PREDICTION;
-    private boolean isSpecific;
+public class ObservationTest {
 
 
-
-    @Builder
-    @java.beans.ConstructorProperties({"name", "source", "label", "description", "prediction"})
-    public PredictableImpl(@NonNull final String name, @NonNull final String source, @NonNull final String label, @NonNull final String description, final TruthValuePowerSet expectation){
-        this.name           = name;
-        this.source         = source;
-        this.label          = label;
-        this.description    = description;
-        this.prediction    = ( prediction == null ) ? TruthValuePowerSet.n : prediction;
-    }
-
-
-    @Override
-    public boolean getIsSpecific( ) {
-        return isSpecific;
-    }
-
-    @Override
-    public void setIsSpecific( boolean isSpecific ) {
-        this.isSpecific = isSpecific;
-    }
 }
