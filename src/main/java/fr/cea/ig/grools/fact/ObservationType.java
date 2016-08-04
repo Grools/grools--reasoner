@@ -47,7 +47,7 @@ import java.util.EnumSet;
 public enum ObservationType {
 
     COMPUTATION     ( "COMPUTATION"     , RelationType.PREDICTION  ),
-    ANNOTATION      ( "ANNOTATION"      , RelationType.PREDICTION, RelationType.EXPECTATION  ),
+    CURATION        ( "CURATION"        , RelationType.PREDICTION, RelationType.EXPECTATION  ),
     EXPERIMENTATION ( "EXPERIMENTATION" , RelationType.EXPECTATION );
 
     @Getter
