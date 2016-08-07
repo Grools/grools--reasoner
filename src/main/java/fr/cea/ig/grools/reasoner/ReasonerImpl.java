@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -154,6 +153,10 @@ public class ReasonerImpl implements Reasoner {
     
     public ReasonerImpl( @NonNull final ConceptGraph graph ){
         this( graph, Mode.NORMAL, Verbosity.QUIET );
+    }
+
+    public ReasonerImpl( @NonNull final Mode mode ){
+        this( new ConceptGraph(), mode, Verbosity.QUIET );
     }
 
     public ReasonerImpl( @NonNull final Mode mode, @NonNull final Verbosity verbosity ){
@@ -496,8 +499,11 @@ public class ReasonerImpl implements Reasoner {
     @Override
     public Set< Relation > getSubGraph( @NonNull final Concept concept ) {
         Set< Relation > subGraph = getRelationsWithTarget( concept );
-        for( final Relation relation : subGraph )
-            subGraph.addAll( getSubGraph( relation.getSource() ) );
+        Set< Relation > toAdd = subGraph.stream()
+                                        .map( relation -> getSubGraph( relation.getSource() ) )
+                                        .flatMap(Collection::stream)
+                                        .collect( Collectors.toSet() );
+        subGraph.addAll( toAdd );
         return subGraph;
     }
 
@@ -599,8 +605,8 @@ public class ReasonerImpl implements Reasoner {
                 top.setExpectation( result );
                 expectationstoEvaluates[currentFrame].addAll( getChildrensPriorKnowledge( top ) );
                 try{
-                    Conclusion conclusion = conclusions.get(    expectationToTruthValueSet( top.getPrediction()  ),
-                                                                predictionToTruthValueSet(  top.getExpectation() ) );
+                    Conclusion conclusion = conclusions.get(    expectationToTruthValueSet( top.getExpectation()  ),
+                                                                predictionToTruthValueSet(  top.getPrediction() ) );
                     top.setConclusion( conclusion );
                 }
                 catch ( Exception e ){
@@ -658,8 +664,8 @@ public class ReasonerImpl implements Reasoner {
                     pk.setExpectation( result );
                     Conclusion conclusion = null;
                     try{
-                        conclusion = conclusions.get( expectationToTruthValueSet(  pk.getPrediction()  ),
-                                                      predictionToTruthValueSet( pk.getExpectation() ) );
+                        conclusion = conclusions.get( expectationToTruthValueSet( pk.getExpectation()   ),
+                                                      predictionToTruthValueSet(  pk.getPrediction() ) );
                         expectationstoEvaluates[nextFrame].addAll( getChildrensPriorKnowledge( pk ) );
                     }
                     catch ( Exception e ){
