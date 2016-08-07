@@ -147,40 +147,20 @@ public class ReasonerImpl implements Reasoner {
         });
     }
     
+    public ReasonerImpl(  ){
+        this( new ConceptGraph(), Mode.NORMAL, Verbosity.QUIET );
+    }
     
-    ReasonerImpl( @NonNull final ConceptGraph graph ){
-        this.graph                  = graph;
-        this.mode                   = Mode.NORMAL;
-        this.verbosity              = Verbosity.LOW;
-        this.predictionstoEvaluates = new Set[2];
-        this.expectationstoEvaluates= new Set[2];
-        this.currentFrame           = 0;
-        this.nextFrame              = 1;
-        this.hasBeenProceesed       = false;
     
-        predictionstoEvaluates[currentFrame]    = new HashSet<>();
-        predictionstoEvaluates[nextFrame]       = new HashSet<>();
-        expectationstoEvaluates[currentFrame]   = new HashSet<>();
-        expectationstoEvaluates[nextFrame]      = new HashSet<>();
+    public ReasonerImpl( @NonNull final ConceptGraph graph ){
+        this( graph, Mode.NORMAL, Verbosity.QUIET );
     }
 
-    ReasonerImpl( @NonNull final Mode mode, @NonNull final Verbosity verbosity ){
-        this.graph                  = new ConceptGraph();
-        this.mode                   = mode;
-        this.verbosity              = verbosity;
-        this.predictionstoEvaluates = new Set[2];
-        this.expectationstoEvaluates= new Set[2];
-        this.currentFrame           = 0;
-        this.nextFrame              = 1;
-        this.hasBeenProceesed       = false;
-    
-        predictionstoEvaluates[currentFrame]    = new HashSet<>();
-        predictionstoEvaluates[nextFrame]       = new HashSet<>();
-        expectationstoEvaluates[currentFrame]   = new HashSet<>();
-        expectationstoEvaluates[nextFrame]      = new HashSet<>();
+    public ReasonerImpl( @NonNull final Mode mode, @NonNull final Verbosity verbosity ){
+        this( new ConceptGraph(), mode, verbosity );
     }
 
-    ReasonerImpl( @NonNull final ConceptGraph graph, @NonNull final Mode mode, @NonNull final Verbosity verbosity ){
+    public ReasonerImpl( @NonNull final ConceptGraph graph, @NonNull final Mode mode, @NonNull final Verbosity verbosity ){
         this.graph                  = graph;
         this.mode                   = mode;
         this.verbosity              = verbosity;
