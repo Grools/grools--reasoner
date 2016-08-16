@@ -67,7 +67,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url "http://repository.jboss.org/nexus/content/groups/public" }
-    maven { url "https://gsphere.genoscope.cns.fr/nexus/content/groups/public" }
 }
 
 dependencies {
@@ -95,22 +94,6 @@ jar {
     }
     baseName = theName
 }
-
-task pomPropertiesGeneration << {
-    String      destDir     = "build/resources/main/META-INF/maven"
-    String      filepath    = "${destDir}/pom.properties"
-    File        dir         = new File( destDir )
-    dir.mkdirs()
-    Properties  maven       = new Properties()
-    File        propsFile   = new File( "${filepath}" )
-    maven.setProperty( 'version'    , theVersion )
-    maven.setProperty( 'groupId'    , theGroup )
-    maven.setProperty( 'artifactId' , theName )
-    maven.store(propsFile.newWriter(), null)
-}
-
-//build.dependsOn pomPropertiesGeneration
-compileJava.dependsOn pomPropertiesGeneration
 
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
@@ -168,9 +151,4 @@ extraArchive {
     sources  = true
     tests    = true
     javadoc  = true
-}
-nexus {
-    sign                  = false
-    repositoryUrl         = 'https://gsphere.genoscope.cns.fr/nexus/content/repositories/releases/'
-    snapshotRepositoryUrl = 'https://gsphere.genoscope.cns.fr/nexus/content/repositories/snapshots/'
 }
