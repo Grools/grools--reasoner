@@ -26,21 +26,21 @@ import static org.junit.Assert.assertEquals;
  * ConclusionTest
  */
 public class ConclusionTest {
-    private final static DoubleEntryTable<TruthValueSet,TruthValueSet,Conclusion> conclusions = new DoubleEntryTable<>(
-        new TruthValueSet[] {TruthValueSet.T, TruthValueSet.F, TruthValueSet.B, TruthValueSet.N },
-        new TruthValueSet[] { TruthValueSet.T, TruthValueSet.F, TruthValueSet.B, TruthValueSet.N },
-        new Conclusion[][]{ // PREDICTION
-                            // TRUE                  FALSE                BOTH                        UNKNOWN         | EXPECTATION
-                            {  CONFIRMED_PRESENCE  , UNEXPECTED_ABSENCE , CONTRADICTORY_ABSENCE     , MISSING  },  // | TRUE
-                            {  UNEXPECTED_PRESENCE , CONFIRMED_ABSENCE  , CONTRADICTORY_PRESENCE    , ABSENT   },  // | FALSE
-                            {  AMBIGUOUS_PRESENCE  , AMBIGUOUS_ABSENCE  , AMBIGUOUS_CONTRADICTORY   , AMBIGUOUS},  // | BOTH
-                            {  UNCONFIRMED_PRESENCE, UNCONFIRMED_ABSENCE, UNCONFIRMED_CONTRADICTORY , UNEXPLAINED} // | UNKNOWN
-        }
+    private final static DoubleEntryTable< TruthValueSet, TruthValueSet, Conclusion > conclusions = new DoubleEntryTable<>(
+            new TruthValueSet[]{ TruthValueSet.T, TruthValueSet.F, TruthValueSet.B, TruthValueSet.N },
+            new TruthValueSet[]{ TruthValueSet.T, TruthValueSet.F, TruthValueSet.B, TruthValueSet.N },
+            new Conclusion[][]{ // PREDICTION
+                                // TRUE                  FALSE                BOTH                        UNKNOWN         | EXPECTATION
+                                { CONFIRMED_PRESENCE, UNEXPECTED_ABSENCE, CONTRADICTORY_ABSENCE, MISSING },  // | TRUE
+                                { UNEXPECTED_PRESENCE, CONFIRMED_ABSENCE, CONTRADICTORY_PRESENCE, ABSENT },  // | FALSE
+                                { AMBIGUOUS_PRESENCE, AMBIGUOUS_ABSENCE, AMBIGUOUS_CONTRADICTORY, AMBIGUOUS },  // | BOTH
+                                { UNCONFIRMED_PRESENCE, UNCONFIRMED_ABSENCE, UNCONFIRMED_CONTRADICTORY, UNEXPLAINED } // | UNKNOWN
+            }
     );
-    
+
     @Test
-    public void isMissing() throws Exception {
-        Conclusion test = conclusions.get( TruthValueSet.T, TruthValueSet.N);
+    public void isMissing( ) throws Exception {
+        Conclusion test = conclusions.get( TruthValueSet.T, TruthValueSet.N );
         assertEquals( MISSING, test );
     }
 }
