@@ -5,13 +5,14 @@ import fr.cea.ig.grools.fact.Relation;
 import lombok.Getter;
 import lombok.NonNull;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * ConceptGraph
  */
-public final class ConceptGraph {
+public final class ConceptGraph implements Serializable {
     @Getter
     @NonNull
     private final Map< Concept, Set< Relation > > outgoing;
@@ -29,11 +30,11 @@ public final class ConceptGraph {
     private final Set< Concept > concepts;
 
     public ConceptGraph( ) {
-        this.outgoing = new HashMap< Concept, Set< Relation > >( );
-        this.incoming = new HashMap< Concept, Set< Relation > >( );
-        this.nameToConcept = new HashMap< String, Concept >( );
-        this.relations = new HashSet< Relation >( );
-        this.concepts = new HashSet< Concept >( );
+        this.outgoing       = new HashMap<>( );
+        this.incoming       = new HashMap<>( );
+        this.nameToConcept  = new HashMap<>( );
+        this.relations      = new HashSet<>( );
+        this.concepts       = new HashSet<>( );
     }
 
 

@@ -12,7 +12,9 @@ import fr.cea.ig.grools.logic.TruthValueSet;
 import lombok.NonNull;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -81,19 +83,23 @@ public class ReasonerImpl implements Reasoner {
 
 
     public ReasonerImpl( @NonNull final ConceptGraph graph, @NonNull final Mode mode, @NonNull final Verbosity verbosity ) {
-        this.graph = graph;
-        this.mode = mode;
-        this.verbosity = verbosity;
-        this.predictionstoEvaluates = new Set[ 2 ];
-        this.expectationstoEvaluates = new Set[ 2 ];
-        this.currentFrame = 0;
-        this.nextFrame = 1;
-        this.hasBeenProceesed = false;
+        this( graph, mode, verbosity, false );
+    }
 
-        predictionstoEvaluates[ currentFrame ] = new HashSet<>( );
-        predictionstoEvaluates[ nextFrame ] = new HashSet<>( );
+    public ReasonerImpl( @NonNull final ConceptGraph graph, @NonNull final Mode mode, @NonNull final Verbosity verbosity, boolean hasBeenProcessed ) {
+        this.graph                      = graph;
+        this.mode                       = mode;
+        this.verbosity                  = verbosity;
+        this.predictionstoEvaluates     = new Set[ 2 ];
+        this.expectationstoEvaluates    = new Set[ 2 ];
+        this.currentFrame               = 0;
+        this.nextFrame                  = 1;
+        this.hasBeenProceesed            = hasBeenProcessed;
+
+        predictionstoEvaluates[ currentFrame ]  = new HashSet<>( );
+        predictionstoEvaluates[ nextFrame ]     = new HashSet<>( );
         expectationstoEvaluates[ currentFrame ] = new HashSet<>( );
-        expectationstoEvaluates[ nextFrame ] = new HashSet<>( );
+        expectationstoEvaluates[ nextFrame ]    = new HashSet<>( );
     }
 
     private static TruthValueSet predictionToTruthValueSet( @NonNull final TruthValuePowerSet tvps ) {
@@ -281,8 +287,13 @@ public class ReasonerImpl implements Reasoner {
     }
 
     @Override
-    public void save( File file ) throws IOException {
-
+    public void save( @NonNull File file ) throws IOException {
+        final FileOutputStream fos = new FileOutputStream( file );
+        final ObjectOutputStream oos = new ObjectOutputStream( fos );
+        oos.writeBoolean( hasBeenProceesed );
+        oos.writeObject( mode );
+        oos.writeObject( verbosity );
+        oos.writeObject( graph );
     }
 
     @Override
@@ -542,9 +553,9 @@ public class ReasonerImpl implements Reasoner {
                 TruthValuePowerSet result = null;
 
                 // get child prior-knowledge linked by a relation "is part of" pk
-                final Set< PriorKnowledge > partOf      = getPartOf( pk );
+                final Set< PriorKnowledge > partOf = getPartOf( pk );
                 // get child prior-knowledge linked by a relation "is subtype of" pk
-                final Set< PriorKnowledge > subtypeOf   = getSubtypeOf( pk );
+                final Set< PriorKnowledge > subtypeOf = getSubtypeOf( pk );
 
                 if ( mode.getVariants( ).contains( VariantMode.DISPENSABLE ) ) {
                     // select dispensable prior-knowledges to be removed from the list part-of prior-knowledge
@@ -590,9 +601,11 @@ public class ReasonerImpl implements Reasoner {
                 // choose the greatest truth value from children
                 result = TruthValuePowerSet.choice( predictionsSubtype );
 
-                if( directPredictions != TruthValueSet.N ){
+                //TODO flag relation qualifier
+
+                if ( directPredictions != TruthValueSet.N ) {
                     result = TruthValuePowerSet.remove( result, TruthValueSet.N );
-                    result = TruthValuePowerSet.add( result,  directPredictions );
+                    result = TruthValuePowerSet.add( result, directPredictions );
                 }
 
                 if ( pk.getPrediction( ) != result ) {
@@ -677,9 +690,9 @@ public class ReasonerImpl implements Reasoner {
                     }
                 }
 
-                if( directExpectations != TruthValueSet.N ){
+                if ( directExpectations != TruthValueSet.N ) {
                     result = TruthValuePowerSet.remove( result, TruthValueSet.N );
-                    result = TruthValuePowerSet.add( result,  directExpectations );
+                    result = TruthValuePowerSet.add( result, directExpectations );
                 }
 
                 if ( pk.getExpectation( ) != result ) {
