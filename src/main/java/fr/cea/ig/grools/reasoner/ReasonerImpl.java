@@ -533,30 +533,44 @@ public class ReasonerImpl implements Reasoner {
         // prediction inference
         while ( isReasoning ) {
             if ( it.hasNext( ) ) {
+                // take a prior-knowledge "pk" to evaluate
                 final PriorKnowledge pk = it.next( );
-                final Set< Observation > predictions = getPredictionsRelatedToConcept( pk );
-                final TruthValueSet truthValueSet = Observation.union( predictions );
+                // get related observations
+                final Set< Observation > observations = getPredictionsRelatedToConcept( pk );
+                // make truth value set from observations related to the prior-knowledge
+                final TruthValueSet directPredictions = Observation.union( observations );
                 TruthValuePowerSet result = null;
 
-                final Set< PriorKnowledge > partOf = getPartOf( pk );
-                final Set< PriorKnowledge > subtypeOf = getSubtypeOf( pk );
+                // get child prior-knowledge linked by a relation "is part of" pk
+                final Set< PriorKnowledge > partOf      = getPartOf( pk );
+                // get child prior-knowledge linked by a relation "is subtype of" pk
+                final Set< PriorKnowledge > subtypeOf   = getSubtypeOf( pk );
+
                 if ( mode.getVariants( ).contains( VariantMode.DISPENSABLE ) ) {
+                    // select dispensable prior-knowledges to be removed from the list part-of prior-knowledge
                     final Set< PriorKnowledge > toRemovePartPk = partOf.stream( )
                                                                        .filter( priorknowledge -> priorknowledge.getIsDispensable( ) )
                                                                        .collect( Collectors.toSet( ) );
                     partOf.removeAll( toRemovePartPk );
+                    // select dispensable prior-knowledges to be removed from the list subtype-of prior-knowledge
                     final Set< PriorKnowledge > toRemoveSubtypePK = subtypeOf.stream( )
                                                                              .filter( priorknowledge -> priorknowledge.getIsDispensable( ) )
                                                                              .collect( Collectors.toSet( ) );
                     subtypeOf.removeAll( toRemoveSubtypePK );
                 }
+
+                // make truth value power set from observations related to the list "is part of" pk
                 final Set< TruthValuePowerSet > predictionsPart = partOf.stream( )
                                                                         .map( PriorKnowledge::getPrediction )
                                                                         .collect( Collectors.toSet( ) );
+
+                // make truth value power set from observations related to the list "is subtype of" pk
                 final Set< TruthValuePowerSet > predictionsSubtype = subtypeOf.stream( )
                                                                               .map( PriorKnowledge::getPrediction )
                                                                               .collect( Collectors.toSet( ) );
+
                 if ( mode.getVariants( ).contains( VariantMode.SPECIFIC ) ) {
+                    // if a prior-knowledge is predicted {{t}} and specific then specific rules is enabled
                     boolean enableSpecificRule = partOf.stream( )
                                                        .filter( priorknowledge -> priorknowledge.getIsSpecific( ) )
                                                        .filter( priorknowledge -> priorknowledge.getPrediction( ) == TruthValuePowerSet.T )
@@ -566,15 +580,19 @@ public class ReasonerImpl implements Reasoner {
                         predictionsPart.remove( TruthValuePowerSet.N );
                 }
 
+                // Priority (1)part, (2)subtype
+
+                // merge truth value power set from children to one truth value power set
                 final TruthValuePowerSet tmp = TruthValuePowerSet.merge( predictionsPart );
+
+                // add the truth value power set with others which was linked by a relation "is subtype of" pk
                 predictionsSubtype.add( tmp );
+                // choose the greatest truth value from children
                 result = TruthValuePowerSet.choice( predictionsSubtype );
 
-                if ( result == TruthValuePowerSet.N ) {
-                    result = TruthValueSet.union( truthValueSet );
-                }
-                else {
-                    result = TruthValuePowerSet.add( result, truthValueSet );
+                if( directPredictions != TruthValueSet.N ){
+                    result = TruthValuePowerSet.remove( result, TruthValueSet.N );
+                    result = TruthValuePowerSet.add( result,  directPredictions );
                 }
 
                 if ( pk.getPrediction( ) != result ) {
@@ -625,8 +643,8 @@ public class ReasonerImpl implements Reasoner {
         while ( isReasoning ) {
             if ( it.hasNext( ) ) {
                 final PriorKnowledge pk = it.next( );
-                final Set< Observation > expectations = getExpectationsRelatedToConcept( pk );
-                final TruthValueSet truthValueSet = Observation.union( expectations );
+                final Set< Observation > observations = getExpectationsRelatedToConcept( pk );
+                final TruthValueSet directExpectations = Observation.union( observations );
                 TruthValuePowerSet result = null;
 
                 if ( mode.getVariants( ).contains( VariantMode.DISPENSABLE ) && pk.getIsDispensable( ) ) {
@@ -658,12 +676,12 @@ public class ReasonerImpl implements Reasoner {
                             result = TruthValuePowerSet.N;
                     }
                 }
-                if ( result == TruthValuePowerSet.N ) {
-                    result = TruthValueSet.union( truthValueSet );
+
+                if( directExpectations != TruthValueSet.N ){
+                    result = TruthValuePowerSet.remove( result, TruthValueSet.N );
+                    result = TruthValuePowerSet.add( result,  directExpectations );
                 }
-                else {
-                    result = TruthValuePowerSet.add( result, truthValueSet );
-                }
+
                 if ( pk.getExpectation( ) != result ) {
                     pk.setExpectation( result );
                     Conclusion conclusion = null;

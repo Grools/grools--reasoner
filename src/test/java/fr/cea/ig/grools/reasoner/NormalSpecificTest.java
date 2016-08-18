@@ -90,7 +90,7 @@ public class NormalSpecificTest {
         assertEquals( TruthValuePowerSet.N, pkD.getPrediction( ) );
         assertEquals( TruthValuePowerSet.T, pkC.getPrediction( ) );
         assertEquals( TruthValuePowerSet.T, pkA.getPrediction( ) );
-        assertEquals( TruthValuePowerSet.NT, pkB.getPrediction( ) );
+        assertEquals( TruthValuePowerSet.T, pkB.getPrediction( ) );
         reasoner.close( );
     }
 

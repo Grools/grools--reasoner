@@ -418,4 +418,21 @@ public class NormalTest {
         assertEquals( TruthValuePowerSet.NT, cC.getExpectation( ) );
         reasoner.close( );
     }
+
+    @Test
+    public void case29( ) throws Exception {
+        Cases.case29( reasoner );
+        final PriorKnowledge cA = reasoner.getPriorKnowledge( "A" );
+        final PriorKnowledge cB = reasoner.getPriorKnowledge( "B" );
+        final PriorKnowledge cC = reasoner.getPriorKnowledge( "C" );
+
+        assertEquals( TruthValuePowerSet.N, cC.getPrediction( ) );
+        assertEquals( TruthValuePowerSet.N, cB.getPrediction( ) );
+        assertEquals( TruthValuePowerSet.N, cA.getPrediction( ) );
+
+        assertEquals( TruthValuePowerSet.N, cA.getExpectation( ) );
+        assertEquals( TruthValuePowerSet.N, cB.getExpectation( ) );
+        assertEquals( TruthValuePowerSet.N, cC.getExpectation( ) );
+        reasoner.close( );
+    }
 }

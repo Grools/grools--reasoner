@@ -1125,4 +1125,15 @@ class Cases {
         reasoner.insert( oeC1ToC, opD1ToD, opD2ToD, opE1ToE );
         reasoner.reasoning( );
     }
+
+    static void case29( @NonNull final Reasoner reasoner ) {
+        final PriorKnowledge nA = PriorKnowledgeImpl.builder( ).name( "A" ).build( );
+        final PriorKnowledge nB = PriorKnowledgeImpl.builder( ).name( "B" ).build( );
+        final PriorKnowledge nC = PriorKnowledgeImpl.builder( ).name( "C" ).build( );
+        reasoner.insert( nA, nB, nC );
+        final Relation cToA = new RelationImpl( nC, nA, RelationType.SUBTYPE );
+        final Relation cToB = new RelationImpl( nC, nB, RelationType.SUBTYPE );
+        reasoner.insert( cToA,cToB );
+        reasoner.reasoning( );
+    }
 }
