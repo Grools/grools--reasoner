@@ -184,8 +184,7 @@ public enum TruthValuePowerSet {
     }
 
     public static TruthValuePowerSet intersection( @NonNull final TruthValuePowerSet... values ){
-        return intersection( Arrays.asList( values)
-                                   .stream()
+        return intersection( Arrays.stream( values )
                                    .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValuePowerSet.class)))  );
     }
 
@@ -196,8 +195,7 @@ public enum TruthValuePowerSet {
     }
 
     public static TruthValuePowerSet add( @NonNull final TruthValuePowerSet truthValueSet, @NonNull final TruthValueSet... truthValues ){
-        return add( truthValueSet, Arrays.asList(truthValues)
-                                         .stream()
+        return add( truthValueSet, Arrays.stream( truthValues )
                                          .collect(Collectors.toCollection(() -> EnumSet.noneOf(TruthValueSet.class)))  );
     }
 
@@ -231,6 +229,10 @@ public enum TruthValuePowerSet {
 
         if( tvps1 == tvps2 )
             result = tvps1;
+        else if( tvps1 == TruthValuePowerSet.n )
+            result = tvps2;
+        else if( tvps2 == TruthValuePowerSet.n )
+            result = tvps1;
         else if( tvps1.getTruth() !=  tvps2.getTruth()) // the most true
             result = ( tvps1.getTruth() > tvps2.getTruth()) ? tvps1 : tvps2;
         else if( tvps1.getFalsehood() !=  tvps2.getFalsehood()) // the less false
@@ -241,6 +243,6 @@ public enum TruthValuePowerSet {
     }
 
     public static TruthValuePowerSet choice(@NonNull final Set<TruthValuePowerSet> set ){
-        return set.stream().reduce( TruthValuePowerSet.F, (a,b) -> choice(a,b) );
+        return set.stream().reduce( TruthValuePowerSet.n, (a,b) -> choice(a,b) );
     }
 }
