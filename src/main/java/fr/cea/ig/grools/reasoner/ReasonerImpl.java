@@ -48,11 +48,11 @@ public class ReasonerImpl implements Reasoner {
             new TruthValueSet[]{ TruthValueSet.T, TruthValueSet.F, TruthValueSet.B, TruthValueSet.N },
             new TruthValueSet[]{ TruthValueSet.T, TruthValueSet.F, TruthValueSet.B, TruthValueSet.N },
             new Conclusion[][]{ // PREDICTION
-                                // TRUE                  FALSE                BOTH                        UNKNOWN         | EXPECTATION
-                                { CONFIRMED_PRESENCE, UNEXPECTED_ABSENCE, CONTRADICTORY_ABSENCE, MISSING },  // | TRUE
-                                { UNEXPECTED_PRESENCE, CONFIRMED_ABSENCE, CONTRADICTORY_PRESENCE, ABSENT },  // | FALSE
-                                { AMBIGUOUS_PRESENCE, AMBIGUOUS_ABSENCE, AMBIGUOUS_CONTRADICTORY, AMBIGUOUS },  // | BOTH
-                                { UNCONFIRMED_PRESENCE, UNCONFIRMED_ABSENCE, UNCONFIRMED_CONTRADICTORY, UNEXPLAINED } // | UNKNOWN
+                                // TRUE                    FALSE                   BOTH                          NONE          | EXPECTATION
+                                { CONFIRMED_PRESENCE    , UNEXPECTED_ABSENCE    , CONTRADICTORY_ABSENCE     , MISSING     },// | TRUE
+                                { UNEXPECTED_PRESENCE   , CONFIRMED_ABSENCE     , CONTRADICTORY_PRESENCE    , ABSENT      },// | FALSE
+                                { AMBIGUOUS_PRESENCE    , AMBIGUOUS_ABSENCE     , AMBIGUOUS_CONTRADICTORY   , AMBIGUOUS   },// | BOTH
+                                { UNCONFIRMED_PRESENCE  , UNCONFIRMED_ABSENCE   , UNCONFIRMED_CONTRADICTORY , UNEXPLAINED } // | NONE
             }
     );
     private final ConceptGraph graph;
@@ -100,74 +100,6 @@ public class ReasonerImpl implements Reasoner {
         predictionstoEvaluates[ nextFrame ]     = new HashSet<>( );
         expectationstoEvaluates[ currentFrame ] = new HashSet<>( );
         expectationstoEvaluates[ nextFrame ]    = new HashSet<>( );
-    }
-
-    private static TruthValueSet predictionToTruthValueSet( @NonNull final TruthValuePowerSet tvps ) {
-        TruthValueSet result;
-        switch ( tvps ) {
-            case T:
-                result = TruthValueSet.T;
-                break;
-            case F:
-            case FB:
-            case TF:
-            case NTFB:
-            case NTF:
-            case NFB:
-            case NF:
-            case TFB:
-                result = TruthValueSet.F;
-                break;
-            case B:
-            case TB:
-            case NTB:
-            case NB:
-                result = TruthValueSet.B;
-                break;
-            case N:
-            case NT:
-            case n:
-                result = TruthValueSet.N;
-                break;
-            default:
-                result = TruthValueSet.N;
-                break;
-        }
-        return result;
-    }
-
-    private static TruthValueSet expectationToTruthValueSet( @NonNull final TruthValuePowerSet tvps ) {
-        TruthValueSet result;
-        switch ( tvps ) {
-            case T:
-            case NT:
-                result = TruthValueSet.T;
-                break;
-            case F:
-            case FB:
-            case TF:
-            case NTFB:
-            case NTF:
-            case NFB:
-            case NF:
-            case TFB:
-                result = TruthValueSet.F;
-                break;
-            case B:
-            case TB:
-            case NTB:
-            case NB:
-                result = TruthValueSet.B;
-                break;
-            case N:
-            case n:
-                result = TruthValueSet.N;
-                break;
-            default:
-                result = TruthValueSet.N;
-                break;
-        }
-        return result;
     }
 
     private void markSpecific( ) {
@@ -639,8 +571,8 @@ public class ReasonerImpl implements Reasoner {
                 top.setExpectation( result );
                 expectationstoEvaluates[ currentFrame ].addAll( getChildrensPriorKnowledge( top ) );
                 try {
-                    Conclusion conclusion = conclusions.get( expectationToTruthValueSet( top.getExpectation( ) ),
-                                                             predictionToTruthValueSet( top.getPrediction( ) ) );
+                    Conclusion conclusion = conclusions.get( Reasoner.expectationToTruthValueSet( top.getExpectation( ) ),
+                                                             Reasoner.predictionToTruthValueSet( top.getPrediction( ) ) );
                     top.setConclusion( conclusion );
                 }
                 catch ( Exception e ) {
@@ -699,8 +631,8 @@ public class ReasonerImpl implements Reasoner {
                     pk.setExpectation( result );
                     Conclusion conclusion = null;
                     try {
-                        conclusion = conclusions.get( expectationToTruthValueSet( pk.getExpectation( ) ),
-                                                      predictionToTruthValueSet( pk.getPrediction( ) ) );
+                        conclusion = conclusions.get( Reasoner.expectationToTruthValueSet( pk.getExpectation( ) ),
+                                                      Reasoner.predictionToTruthValueSet( pk.getPrediction( ) ) );
                         expectationstoEvaluates[ nextFrame ].addAll( getChildrensPriorKnowledge( pk ) );
                     }
                     catch ( Exception e ) {
