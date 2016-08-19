@@ -137,6 +137,19 @@ public enum TruthValueSet {
         return truthValueSet.size();
     }
 
+    public static String toLiteral( TruthValueSet tvSet ){
+        final String result;
+        switch ( tvSet ){
+            case N: result = "None"; break;
+            case T: result = "True"; break;
+            case F: result = "False"; break;
+            case B: result = "Both"; break;
+            case n:
+            default: result = "any"; break;
+        }
+        return result;
+    }
+
     public static TruthValuePowerSet union( @NonNull final TruthValueSet... values){
         return union( Arrays.asList( values )
                             .stream()
