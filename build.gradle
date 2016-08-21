@@ -66,12 +66,10 @@ description         = theDescription
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "http://repository.jboss.org/nexus/content/groups/public" }
 }
 
 dependencies {
-    compileOnly group: 'org.projectlombok'  , name: 'lombok'                , version: lombokVersion
-    compile     group: theGroup             , name: 'grools-checker'        , version: '3.0.0'
+    compile     group: 'org.projectlombok'  , name: 'lombok'                , version: lombokVersion
     compile     group: 'ch.qos.logback'     , name: 'logback-classic'       , version: logbackVersion
     testCompile group: 'junit'              , name: 'junit'                 , version: junitVersion
 
