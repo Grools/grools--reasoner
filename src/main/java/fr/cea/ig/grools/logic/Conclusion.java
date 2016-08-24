@@ -43,22 +43,22 @@ import lombok.Getter;
  */
 public enum Conclusion {
 
-    CONFIRMED_PRESENCE          ( "CONFIRMED_PRESENCE"          ),
-    CONFIRMED_ABSENCE           ( "CONFIRMED_ABSENCE"           ),
-    UNEXPECTED_PRESENCE         ( "UNEXPECTED_PRESENCE"         ),
-    UNEXPECTED_ABSENCE          ( "UNEXPECTED_ABSENCE"          ),
-    CONTRADICTORY_PRESENCE      ( "CONTRADICTORY_PRESENCE"      ),
-    CONTRADICTORY_ABSENCE       ( "CONTRADICTORY_ABSENCE"       ),
-    AMBIGUOUS_PRESENCE          ( "AMBIGUOUS_PRESENCE"          ),
-    AMBIGUOUS_ABSENCE           ( "AMBIGUOUS_ABSENCE"           ),
-    AMBIGUOUS_CONTRADICTORY     ( "AMBIGUOUS_CONTRADICTORY"     ),
-    UNCONFIRMED_PRESENCE        ( "UNCONFIRMED_PRESENCE"        ),
-    UNCONFIRMED_ABSENCE         ( "UNCONFIRMED_ABSENCE"         ),
-    UNCONFIRMED_CONTRADICTORY   ( "UNCONFIRMED_CONTRADICTORY"   ),
-    MISSING                     ( "MISSING"                     ),
-    ABSENT                      ( "ABSENT"                      ),
-    AMBIGUOUS                   ( "AMBIGUOUS"                   ),
-    UNEXPLAINED                 ( "UNEXPLAINED"                 );
+    CONFIRMED_PRESENCE          ( "Confirmed presence"          ),
+    CONFIRMED_ABSENCE           ( "Confirmed absence"           ),
+    UNEXPECTED_PRESENCE         ( "Unexpected presence"         ),
+    UNEXPECTED_ABSENCE          ( "Unexpected absence"          ),
+    CONTRADICTORY_PRESENCE      ( "Contradictory presence"      ),
+    CONTRADICTORY_ABSENCE       ( "Contradictory_absence"       ),
+    AMBIGUOUS_PRESENCE          ( "Ambiguous presence"          ),
+    AMBIGUOUS_ABSENCE           ( "Ambiguous absence"           ),
+    AMBIGUOUS_CONTRADICTORY     ( "Ambiguous_contradictory"     ),
+    UNCONFIRMED_PRESENCE        ( "Unconfirmed presence"        ),
+    UNCONFIRMED_ABSENCE         ( "Unconfirmed absence"         ),
+    UNCONFIRMED_CONTRADICTORY   ( "Unconfirmed contradictory"   ),
+    MISSING                     ( "Missing"                     ),
+    ABSENT                      ( "Absent"                      ),
+    AMBIGUOUS                   ( "Ambiguous"                   ),
+    UNEXPLAINED                 ( "Unexplained"                 );
 
 
 
