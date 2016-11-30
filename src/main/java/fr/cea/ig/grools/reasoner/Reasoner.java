@@ -108,26 +108,24 @@ public interface Reasoner extends Serializable, AutoCloseable {
                 result = TruthValueSet.T;
                 break;
             case F:
-            case FB:
-            case TF:
-            case NTFB:
-            case NTF:
-            case NFB:
-            case NF:
-            case TFB:
                 result = TruthValueSet.F;
                 break;
-            case B:
-            case TB:
-            case NTB:
             case NB:
+            case NTB:
+            case TB:
+            case TF:
+            case TFB:
+            case NTF:
+            case NTFB:
+            case FB:
+            case NFB:
+            case B:
                 result = TruthValueSet.B;
                 break;
-            case N:
-            case NT:
             case n:
-                result = TruthValueSet.N;
-                break;
+            case NT:
+            case NF:
+            case N:
             default:
                 result = TruthValueSet.N;
                 break;
@@ -138,30 +136,28 @@ public interface Reasoner extends Serializable, AutoCloseable {
     static TruthValueSet expectationToTruthValueSet( @NonNull final TruthValuePowerSet tvps ) {
         TruthValueSet result;
         switch ( tvps ) {
-            case T:
             case NT:
+            case T:
                 result = TruthValueSet.T;
                 break;
-            case F:
-            case FB:
-            case TF:
-            case NTFB:
-            case NTF:
-            case NFB:
             case NF:
-            case TFB:
+            case F:
                 result = TruthValueSet.F;
                 break;
-            case B:
-            case TB:
-            case NTB:
             case NB:
+            case NTB:
+            case TB:
+            case TF:
+            case TFB:
+            case NTF:
+            case NTFB:
+            case FB:
+            case NFB:
+            case B:
                 result = TruthValueSet.B;
                 break;
-            case N:
             case n:
-                result = TruthValueSet.N;
-                break;
+            case N:
             default:
                 result = TruthValueSet.N;
                 break;
